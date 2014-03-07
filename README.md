@@ -15,6 +15,10 @@ Database Design
   - Email Address *(required for members)*
   - Phone number etc *(member info)*
   - Is a member? *(to distinguish members from other things, e.g. ACTPG)*
+  - Reminder Date *(when to send payment reminder to member if they want one)*
+  - Joined Date *(date the person joined)*
+  - Agreement Date *(date the person agreed to rules)*
+
 - Payments
   - ID *(auto)*
   - Date *(required)*

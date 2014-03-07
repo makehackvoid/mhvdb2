@@ -17,6 +17,8 @@ class Entity(Model):
     email = CharField(null=True)  # Email is required for members
     phone = CharField(null=True)
     reminder_date = DateField(null=True)  # When to send reminder to member
+    joined_date = DateField(null=True)  # date the person first joined
+    agreement_date = DateField(null=True)  # date the person agreed to rules
 
 
 class Payment(Model):
