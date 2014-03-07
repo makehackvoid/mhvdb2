@@ -12,9 +12,11 @@ class Entity(Model):
     An Entity sends money to the organisation or recieves money from the
     organistaion. Members are a special type of entity.
     """
+    is_member = BooleanField()  # Is the entity a member (past or present)
     name = CharField()
     email = CharField(null=True)  # Email is required for members
-    is_member = BooleanField()  # Is the entity a member or past member
+    phone = CharField(null=True)
+    reminder_date = DateField(null=True)  # When to send reminder to member
 
 
 class Payment(Model):
