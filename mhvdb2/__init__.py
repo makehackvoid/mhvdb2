@@ -15,5 +15,10 @@ def after_request(response):
     g.db.close()
     return response
 
-import mhvdb2.models
+from mhvdb2.models import Entity, Payment
 import mhvdb2.views
+
+database.connect()
+if not Entity.table_exists(): Entity.create_table()
+if not Payment.table_exists(): Payment.create_table()
+database.close()
