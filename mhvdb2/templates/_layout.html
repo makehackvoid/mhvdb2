@@ -1,0 +1,13 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - MHVDB</title>
+  </head>
+  <body>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+  </body>
+</html>
