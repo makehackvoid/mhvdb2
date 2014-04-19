@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, g
 from peewee import *
 
 app = Flask(__name__)
