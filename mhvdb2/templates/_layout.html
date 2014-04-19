@@ -1,13 +1,52 @@
+{% set navigation_bar = [
+    ('/', 'index', 'Home', 'home'),
+    ('/signup/', 'signup', 'Sign Up', 'user'),
+    ('/update/', 'update', 'Update Details', 'refresh')
+] -%}
+
+{% set active_page = active_page|default('index') -%}
+
 <!doctype html>
 <html>
-  <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>{% block title %}{% endblock %} - MHVDB</title>
-  </head>
-  <body>
-    <div id="content">
-        {% block content %}
-        {% endblock %}
-    </div>
-  </body>
+    <head>
+        <title>{% block title %}{% endblock %} - MHVDBv2</title>
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" href="#">MHVDBv2</a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            {% for href, id, caption, icon in navigation_bar %}
+                                <li{% if id == active_page %} class="active"{% endif %}>
+                                    <a href="{{ href|e }}"><i class="fa fa-{{ icon|e }}"></i> {{ caption|e }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right"><li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li></ul>
+                    </div><!--/.nav-collapse -->
+                </div><!--/.container-fluid -->
+            </div>
+
+            <section id="content">
+                {% block content %}
+                {% endblock %}
+            </section>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    </body>
 </html>
