@@ -6,6 +6,20 @@
 
 {% set active_page = active_page|default('index') -%}
 
+{% macro render_messages(category) %}
+    {% with messages = get_flashed_messages(category_filter=[category]) %}
+        {% if messages %}
+            <div class="alert alert-{{category}} alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true"><i class="fa fa-lg fa-close"></i></button>
+
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+{% endmacro %}
+
 <!doctype html>
 <html>
     <head>
@@ -39,6 +53,10 @@
             </div>
 
             <section id="content">
+                {{ render_messages("success") }}
+                {{ render_messages("info") }}
+                {{ render_messages("warning") }}
+                {{ render_messages("danger") }}
                 {% block content %}
                 {% endblock %}
             </section>
