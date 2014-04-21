@@ -21,9 +21,7 @@
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                             <span class="sr-only">Toggle navigation</span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
+                            <i class="fa fa-bars fa-lg"></i>
                         </button>
                         <a class="navbar-brand" href="#">MHVDBv2</a>
                     </div>
@@ -31,11 +29,11 @@
                         <ul class="nav navbar-nav">
                             {% for href, id, caption, icon in navigation_bar %}
                                 <li{% if id == active_page %} class="active"{% endif %}>
-                                    <a href="{{ href|e }}"><i class="fa fa-{{ icon|e }}"></i> {{ caption|e }}</a>
+                                    <a href="{{ href|e }}"><i class="fa fa-fw fa-{{ icon|e }}"></i> {{ caption|e }}</a>
                                 </li>
                             {% endfor %}
                         </ul>
-                        <ul class="nav navbar-nav navbar-right"><li><a href="#"><i class="fa fa-dashboard"></i> Admin</a></li></ul>
+                        <ul class="nav navbar-nav navbar-right"><li><a href="#"><i class="fa fa-fw fa-dashboard"></i> Admin</a></li></ul>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
             </div>
