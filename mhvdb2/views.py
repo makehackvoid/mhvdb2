@@ -59,3 +59,9 @@ def signup_post():
     user.save()
 
     return signup_get()
+
+
+@app.route('/admin/')
+def admin():
+    members = Entity.select().where(Entity.is_member == True)
+    return render_template('admin.html', members=members)
