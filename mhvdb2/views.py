@@ -40,28 +40,28 @@ def signup_post():
         return render_template('signup.html', first_name=first_name,
                                last_name=last_name, email=email)
 
-    # Create / Update user
-    user = None
+    # Create / Update member
+    member = None
     try:
-        user = Entity.get(Entity.email == email)
+        member = Entity.get(Entity.email == email)
         flash("Thanks for renewing, your details have been updated!",
               "success")
     except DoesNotExist:
-        user = Entity()
-        user.is_member = True
-        user.joined_date = date.today()
+        member = Entity()
+        member.is_member = True
+        member.joined_date = date.today()
         flash("Thanks for registering!", "success")
 
-    user.name = first_name + ' ' + last_name
-    user.email = email
-    user.phone = phone
-    user.agreement_date = date.today()
-    user.save()
+    member.name = first_name + ' ' + last_name
+    member.email = email
+    member.phone = phone
+    member.agreement_date = date.today()
+    member.save()
 
     return signup_get()
 
 
 @app.route('/admin/')
 def admin():
-    members = Entity.select().where(Entity.is_member == True)
+    members = Entity.select().where(Entity.is_member)
     return render_template('admin.html', members=members)
