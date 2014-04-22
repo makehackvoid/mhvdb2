@@ -1,7 +1,6 @@
 {% set navigation_bar = [
     ('/', 'index', 'Home', 'home'),
-    ('/signup/', 'signup', 'Sign Up', 'user'),
-    ('/update/', 'update', 'Update Details', 'refresh')
+    ('/signup/', 'signup', 'Sign Up', 'user')
 ] -%}
 
 {% set active_page = active_page|default('index') -%}
@@ -37,7 +36,7 @@
                             <span class="sr-only">Toggle navigation</span>
                             <i class="fa fa-bars fa-lg"></i>
                         </button>
-                        <a class="navbar-brand" href="#">MHVDBv2</a>
+                        <a class="navbar-brand" href="/">MHVDBv2</a>
                     </div>
                     <div class="navbar-collapse collapse">
                         <ul class="nav navbar-nav">
@@ -47,7 +46,7 @@
                                 </li>
                             {% endfor %}
                         </ul>
-                        <ul class="nav navbar-nav navbar-right"><li><a href="#"><i class="fa fa-fw fa-dashboard"></i> Admin</a></li></ul>
+                        <ul class="nav navbar-nav navbar-right"><li><a href="/admin/"><i class="fa fa-fw fa-dashboard"></i> Admin</a></li></ul>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
             </div>
