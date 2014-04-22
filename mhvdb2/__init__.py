@@ -3,7 +3,7 @@ from peewee import *
 
 app = Flask(__name__)
 app.config.from_object('settings')
-database = SqliteDatabase(app.config['DATABASE'])
+database = SqliteDatabase(app.config['DATABASE'], threadlocals=True)
 
 
 @app.before_request

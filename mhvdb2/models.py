@@ -7,7 +7,7 @@ class BaseModel(Model):
         database = database
 
 
-class Entity(Model):
+class Entity(BaseModel):
     """
     An Entity sends money to the organisation or recieves money from the
     organistaion. Members are a special type of entity.
@@ -21,7 +21,7 @@ class Entity(Model):
     agreement_date = DateField(null=True)  # date the person agreed to rules
 
 
-class Payment(Model):
+class Payment(BaseModel):
     """
     A Payment is a transaction between an entity and the organisation. A
     payment can be either incoming or outgoing, depending on the sign of
