@@ -8,11 +8,11 @@
 <h1>Make a payment</h1>
 <p>Make a payment to MakeHackVoid via Bank Transfer, Bitcoin, or Credit Card.</p>
 <div class='row'>
-    <form method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
+    <form id="payments" method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
         <div class="form-group">
             <label for="email">Email Address</label>
             <input type="email" class="form-control" name="email" id="email" value="{{email}}">
-            <p class="help-block">This should be the same email address you signed up to MHV with.</p>
+            <p class="help-block">This should match the email you used to sign up to MHV.</p>
         </div>
         <div class="row">
         <div class="form-group col-xs-6">
@@ -26,17 +26,63 @@
         <div class="form-group col-xs-6">
             <label for="method">Payment Method</label>
             <select class="form-control selectpicker" name="method" id="method" value="{{method}}">
-              <option data-content="<i class='fa fa-fw fa-bank'></i> Bank Transfer">Bank Transfer</option>
-              <option data-content="<i class='fa fa-fw fa-bitcoin'></i> Bitcoin">Bitcoin</option>
-              <option data-content="<i class='fa fa-fw fa-credit-card'></i> Credit Card">Credit Card</option>
+              <option value="1" data-content="<i class='fa fa-fw fa-bank'></i> Bank Transfer">Bank Transfer</option>
+              <option value="2" data-content="<i class='fa fa-fw fa-bitcoin'></i> Bitcoin">Bitcoin</option>
+              <option value="3" data-content="<i class='fa fa-fw fa-credit-card'></i> Credit Card">Credit Card</option>
             </select>
         </div>
+        </div>
+        <div class="form-group">
+            <label for="notes">Notes</label>
+            <input type="text" class="form-control" name="notes" id="notes" value="{{notes}}">
         </div>
         <button type="submit" class="btn btn-default">Continue</button>
     </form>
 </div>
+
+<!-- Modal for bank transfer details -->
+<div class="modal fade" id="bank-transfer">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+        <h4 class="modal-title">Bank Transfer</h4>
+      </div>
+      <div class="modal-body">
+        <p>Please enter the following details into your bank&rsquo;s online transfer facility:</p>
+        <dl>
+        <dt>Name</dt><dd>Make Hack Void Inc</dd>
+        <dt>BSB</dt><dd>062913</dd>
+        <dt>Account Number</dt><dd>10910053</dd>
+        <dt>Transfer Amount</dt><dd>xxxx</dd>
+        <dt>Reference</dt><dd>yyyy</dd>
+        </dl>
+        <p>Once you have initiated the transfer, please press the confirmation button below.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="confirm" class="btn btn-primary" data-toggle="tooltip" title="Make sure you&rsquo;ve initiated your transfer first!">Confirm Payment</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}
 {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
-<script type="text/javascript">$(".selectpicker").selectpicker();</script>
+<script type="text/javascript">
+    $(".selectpicker").selectpicker();
+    $('#confirm').tooltip();
+
+    $("#payments").submit(function(event) {
+        var method = $("#method").val();
+        if (method == 1) {         // Bank Transfer
+            $("#bank-transfer").modal();
+        } else if (method == 2) {  // Bitcoin
+
+        } else if (method == 3) {  // Credit Card
+
+        }
+        event.preventDefault();
+    });
+</script>
 {% endblock %}
