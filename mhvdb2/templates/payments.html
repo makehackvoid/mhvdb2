@@ -1,0 +1,42 @@
+{% extends "_layout.html" %}
+{% set active_page = "payments" %}
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.css">
+{% endblock %}
+{% block title %}Payments{% endblock %}
+{% block content %}
+<h1>Make a payment</h1>
+<p>Make a payment to MakeHackVoid via Bank Transfer, Bitcoin, or Credit Card.</p>
+<div class='row'>
+    <form method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" name="email" id="email" value="{{email}}">
+            <p class="help-block">This should be the same email address you signed up to MHV with.</p>
+        </div>
+        <div class="row">
+        <div class="form-group col-xs-6">
+            <label for="type">Payment Type</label>
+            <select class="form-control selectpicker" name="type" id="type" value="{{type}}">
+              <option>Membership</option>
+              <option>Donation</option>
+              <option>Other</option>
+            </select>
+        </div>
+        <div class="form-group col-xs-6">
+            <label for="method">Payment Method</label>
+            <select class="form-control selectpicker" name="method" id="method" value="{{method}}">
+              <option data-content="<i class='fa fa-fw fa-bank'></i> Bank Transfer">Bank Transfer</option>
+              <option data-content="<i class='fa fa-fw fa-bitcoin'></i> Bitcoin">Bitcoin</option>
+              <option data-content="<i class='fa fa-fw fa-credit-card'></i> Credit Card">Credit Card</option>
+            </select>
+        </div>
+        </div>
+        <button type="submit" class="btn btn-default">Continue</button>
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
+<script type="text/javascript">$(".selectpicker").selectpicker();</script>
+{% endblock %}

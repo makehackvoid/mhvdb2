@@ -61,6 +61,11 @@ def signup_post():
     return signup_get()
 
 
+@app.route('/payments/', methods=['GET'])
+def payments_get():
+    return render_template('payments.html')
+
+
 @app.route('/admin/')
 def admin():
     members = Entity.select().where(Entity.is_member)
