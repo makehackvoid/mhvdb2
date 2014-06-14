@@ -17,12 +17,10 @@ class FlaskrTestCase(unittest.TestCase):
 
     def test_index(self):
         rv = self.app.get('/')
-        self.assertTrue("Hello, World!" in rv.data)
         self.assertTrue(rv.status_code == 200)
 
     def test_signup_get(self):
         rv = self.app.get('/signup/')
-        self.assertTrue("Sign up" in rv.data)
         self.assertTrue(rv.status_code == 200)
 
     def test_signup_post(self):

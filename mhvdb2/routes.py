@@ -6,7 +6,7 @@ from datetime import date
 from peewee import DoesNotExist
 import json
 
-from resources import *
+from mhvdb2.resources import *
 
 
 # Response object (must be returned by resource call, is a dictionary)
@@ -21,13 +21,13 @@ from resources import *
 #   template  -> name of the html template to render (default: "index.html")
 #   kind      -> either "json" or "html" (default: "html")
 def web(response, template="index.html", kind="html"):
-    if response.has_key("status"):
+    if "status" in response:
         status = response["status"]
     else:
         status = 200
 
     if kind == "html":
-        if response.has_key("flash"):
+        if "flash" in response:
             flash(response["flash"][0], response["flash"][1])
 
         return (render_template(template, data=response["data"]), status, {})
