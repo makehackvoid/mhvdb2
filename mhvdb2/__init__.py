@@ -18,7 +18,7 @@ def after_request(response):
     return response
 
 from mhvdb2.models import Entity, Payment
-import mhvdb2.views
+import mhvdb2.routes
 
 database.connect()
 if not Entity.table_exists():
