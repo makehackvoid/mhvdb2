@@ -5,3 +5,11 @@ body {
 .bootstrap-select {
 	margin-bottom: 0 !important;
 }
+
+input.copy {
+	/* Remove the default "disabled" styling */
+	cursor: default !important;
+	background-color: white !important;
+	color: #333 !important;
+	width: auto;
+}
