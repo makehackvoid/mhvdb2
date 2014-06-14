@@ -6,7 +6,7 @@ from datetime import date
 from peewee import DoesNotExist
 import json
 
-from mhvdb2.resources import *
+from mhvdb2.resources import PaymentResource, MemberResource
 
 
 @app.route('/')
