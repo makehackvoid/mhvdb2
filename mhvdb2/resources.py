@@ -8,7 +8,7 @@ from peewee import DoesNotExist
 class Resource:
     pass
 
-class User(Resource):
+class MemberResource(Resource):
     @staticmethod
     def validate(name, email, phone):
         flashes = []

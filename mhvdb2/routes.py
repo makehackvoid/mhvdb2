@@ -33,10 +33,10 @@ def signup_post():
 
     try:
         member = Entity.get(Entity.email == email)
-        User.update(member, name, email, phone)
+        MemberResource.update(member, name, email, phone)
         flash("Thanks for renewing, your details have been updated!", "success")
     except DoesNotExist:
-        User.create(name, email, phone)
+        MemberResource.create(name, email, phone)
         flash("Thanks for registering!", "success")
 
     return signup_get()
