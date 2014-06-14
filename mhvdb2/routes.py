@@ -23,11 +23,11 @@ def signup_post():
     email = request.form["email"].strip()
     phone = request.form["phone"].strip()
 
-    (valid, flashes) = User.validate(name, email, phone)
+    flashes = MemberResource.validate(name, email, phone)
 
-    if not valid:
+    if len(flashes) > 0: #this means that an error has occured
         for f in flashes:
-            flash(f[0], f[1])
+            flash(f, 'danger')
 
         return render_template('signup.html'), 400
 
@@ -54,19 +54,17 @@ def payments_post():
     notes = request.form["notes"].strip()
     reference = request.form["reference"].strip()
 
-    (valid, flashes) = PaymentResource.validate(amount, email, method, type, notes, reference)
+    flashes = PaymentResource.validate(amount, email, method, type, notes, reference)
 
     entity = None
     try: 
         entity = Entity.get(Entity.email == email)
     except DoesNotExist: 
-        flashes.append(("Sorry, you need to provide a valid member's email address.", 'danger'))
-        valid = False
+        flashes.append("Sorry, you need to provide a valid member's email address.")
 
-    if not valid:
+    if len(flashes) > 0: #this means that an error has occured
         for f in flashes:
-            flash(f[0], f[1])
-            print("flashing ", f)
+            flash(f, 'danger')
         return render_template('payments.html', amount=amount, email=email,
             method=method, type=type, notes=notes, reference=reference), 400
 

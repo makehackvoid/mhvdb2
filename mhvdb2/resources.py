@@ -12,21 +12,14 @@ class User(Resource):
     @staticmethod
     def validate(name, email, phone):
         flashes = []
-        valid = True
         if not name:
-            flashes.append(("Sorry, you need to provide a name.", 'danger'))
-            valid = False
+            flashes.append("Sorry, you need to provide a name.")
         if not phone:
-            flashes.append(("Sorry, you need to provide a phone number.", 'danger'))
-            valid = False
+            flashes.append("Sorry, you need to provide a phone number.")
         if not re.match("[^@\s]+@[^@\s]+", email):
-            flashes.append(("Sorry, you need to provide an email address.", 'danger'))
-            valid = False
+            flashes.append("Sorry, you need to provide an email address.")
 
-        if valid:
-            return (True, flashes)
-        else:
-            return (False, flashes)
+        return flashes
 
     @staticmethod
     def create(name, email, phone):
@@ -52,30 +45,21 @@ class User(Resource):
 class PaymentResource(Resource):
     @staticmethod
     def validate(amount, email, method, type, notes, reference):
-        valid = True
         flashes = []
 
         if not amount or not amount.isdigit() or int(amount) <=0:
-            flashes.append(("Sorry, you need to provide a valid amount.", 'danger'))
-            valid = False
+            flashes.append("Sorry, you need to provide a valid amount.")
         if not re.match("[^@\s]+@[^@\s]+", email):
-            flashes.append(("Sorry, you need to provide a valid email address.", 'danger'))
-            valid = False
+            flashes.append("Sorry, you need to provide a valid email address.")
         if not type or not type.isdigit() or int(type) > 2:
-            flashes.append(("Sorry, you need to provide a valid payment type.", 'danger'))
-            valid = False
+            flashes.append("Sorry, you need to provide a valid payment type.")
         if not method or not method.isdigit() or int(method) > 2:
-            flashes.append(("Sorry, you need to provide a valid payment method.", 'danger'))
-            valid = False
+            flashes.append("Sorry, you need to provide a valid payment method.")
         if not reference:
-            flashes.append(("Sorry, you need to provide a reference.", 'danger'))
-            valid = False
+            flashes.append("Sorry, you need to provide a reference.")
 
-        if valid:
-            return (True, flashes)
-        else:
-            return (False, flashes)
-
+        return flashes
+       
     @staticmethod
     def create(amount, entity, method, type, notes, reference):
         # Cajole the post data into integers
