@@ -19,14 +19,13 @@ def signup_get():
 @app.route('/signup/', methods=['POST'])
 def signup_post():
     # Get inputs from form
-    first_name = request.form["first-name"].strip()
-    last_name = request.form["last-name"].strip()
+    name = request.form["name"].strip()
     email = request.form["email"].strip()
     phone = request.form["phone"].strip()
 
     # Validate inputs
     valid = True
-    if not first_name or not last_name:
+    if not name:
         flash("Sorry, you need to provide a name.", 'danger')
         valid = False
     if not phone:
@@ -37,8 +36,7 @@ def signup_post():
         valid = False
 
     if not valid:
-        return render_template('signup.html', first_name=first_name,
-                               last_name=last_name, email=email)
+        return render_template('signup.html', name=name, email=email)
 
     # Create / Update member
     member = None
@@ -52,7 +50,7 @@ def signup_post():
         member.joined_date = date.today()
         flash("Thanks for registering!", "success")
 
-    member.name = first_name + ' ' + last_name
+    member.name = name
     member.email = email
     member.phone = phone
     member.agreement_date = date.today()
