@@ -8,10 +8,18 @@ then told virtualenvwrapper to use that python by setting
 
 ```
 export VIRTUALENV_PYTHON=/usr/local/bin/python3
-mkproject mhvdb2
 ```
 
-then unset they python env variable using
+then if you don't already have a project directory, use  
+```mkproject mhvdb2``` 
+to create it or, if it already exists, change to the project directory and use
+
+```
+mkvirtualenv mhvdb2
+setvirtualenvproject
+``` 
+
+Once it is setup, to stop defaulting to python3, unset the python env variable using
 
 ```unset VIRTUALENV_PYTHON```
 
