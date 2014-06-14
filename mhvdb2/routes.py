@@ -5,7 +5,7 @@ import re
 from datetime import date
 from peewee import DoesNotExist
 import json
-from mhvdb2.resources import payment, resources
+from mhvdb2.resources import payments, members
 
 
 @app.route('/')
@@ -22,7 +22,7 @@ def signup_post():
     email = request.form["email"].strip()
     phone = request.form["phone"].strip()
 
-    flashes = MemberResource.validate(name, email, phone)
+    flashes = members.validate(name, email, phone)
 
     if len(flashes) > 0: #this means that an error has occured
         for f in flashes:
@@ -32,10 +32,10 @@ def signup_post():
 
     try:
         member = Entity.get(Entity.email == email)
-        MemberResource.update(member, name, email, phone)
+        members.update(member, name, email, phone)
         flash("Thanks for renewing, your details have been updated!", "success")
     except DoesNotExist:
-        MemberResource.create(name, email, phone)
+        members.create(name, email, phone)
         flash("Thanks for registering!", "success")
 
     return signup_get()
@@ -53,7 +53,7 @@ def payments_post():
     notes = request.form["notes"].strip()
     reference = request.form["reference"].strip()
 
-    flashes = PaymentResource.validate(amount, email, method, type, notes, reference)
+    flashes = payments.validate(amount, email, method, type, notes, reference)
 
     entity = None
     try: 
@@ -72,7 +72,7 @@ def payments_post():
     type = int(type)
     method = int(method)
 
-    PaymentResource.create(amount, entity, method, type, notes, reference)
+    payments.create(amount, entity, method, type, notes, reference)
     flash("Thank you!", "success")
 
     return payments_get()
