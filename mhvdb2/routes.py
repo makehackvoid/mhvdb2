@@ -67,6 +67,11 @@ def payments_post():
             flash(f, 'danger')
         return render_template('payments.html', amount=amount, email=email,
             method=method, type=type, notes=notes, reference=reference), 400
+    
+    # Cajole the post data into integers
+    amount = int(amount)
+    type = int(type)
+    method = int(method)
 
     PaymentResource.create(amount, entity, method, type, notes, reference)
     flash("Thank you!", "success")

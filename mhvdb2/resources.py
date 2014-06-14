@@ -62,11 +62,7 @@ class PaymentResource(Resource):
        
     @staticmethod
     def create(amount, entity, method, type, notes, reference):
-        # Cajole the post data into integers
-        amount = int(amount)
-        type = int(type)
-        method = int(method)
-
+      
         # Create payment
         payment = Payment()
         payment.time = datetime.now()
