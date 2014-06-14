@@ -10,25 +10,32 @@
 <div class='row'>
     <form id="payments" method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
         <div class="form-group">
+            <label for="amount">Payment Amount</label>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <input required type="number" step="0.01" class="form-control" name="amount" id="amount" value="{{amount}}">
+            </div>
+        </div>
+        <div class="form-group">
             <label for="email">Email Address</label>
-            <input type="email" class="form-control" name="email" id="email" value="{{email}}">
+            <input required type="email" class="form-control" name="email" id="email" value="{{email}}">
             <p class="help-block">This should match the email you used to sign up to MHV.</p>
         </div>
         <div class="row">
         <div class="form-group col-xs-6">
             <label for="type">Payment Type</label>
             <select class="form-control selectpicker" name="type" id="type" value="{{type}}">
-              <option>Membership</option>
-              <option>Donation</option>
-              <option>Other</option>
+              <option value="0" >Membership</option>
+              <option value="1" >Donation</option>
+              <option value="2" >Other</option>
             </select>
         </div>
         <div class="form-group col-xs-6">
             <label for="method">Payment Method</label>
             <select class="form-control selectpicker" name="method" id="method" value="{{method}}">
-              <option value="1" data-content="<i class='fa fa-fw fa-bank'></i> Bank Transfer">Bank Transfer</option>
-              <option value="2" data-content="<i class='fa fa-fw fa-bitcoin'></i> Bitcoin">Bitcoin</option>
-              <option value="3" data-content="<i class='fa fa-fw fa-credit-card'></i> Credit Card">Credit Card</option>
+              <option value="0" data-content="<i class='fa fa-fw fa-bank'></i> Bank Transfer">Bank Transfer</option>
+              <option disabled value="1" data-content="<i class='fa fa-fw fa-bitcoin'></i> Bitcoin">Bitcoin</option>
+              <option disabled value="2" data-content="<i class='fa fa-fw fa-credit-card'></i> Credit Card">Credit Card</option>
             </select>
         </div>
         </div>
@@ -36,6 +43,7 @@
             <label for="notes">Notes</label>
             <input type="text" class="form-control" name="notes" id="notes" value="{{notes}}">
         </div>
+        <input type="hidden" name="reference" id="reference">
         <button type="submit" class="btn btn-default">Continue</button>
     </form>
 </div>
@@ -54,14 +62,14 @@
         <dt>Name</dt><dd>Make Hack Void Inc</dd>
         <dt>BSB</dt><dd>062913</dd>
         <dt>Account Number</dt><dd>10910053</dd>
-        <dt>Transfer Amount</dt><dd>xxxx</dd>
-        <dt>Reference</dt><dd>yyyy</dd>
+        <dt>Transfer Amount</dt><dd id="bank-transfer-amount"></dd>
+        <dt>Reference <small class="text-danger">(important!)</small></dt><dd id="bank-transfer-reference"></dd>
         </dl>
         <p>Once you have initiated the transfer, please press the confirmation button below.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" id="confirm" class="btn btn-primary" data-toggle="tooltip" title="Make sure you&rsquo;ve initiated your transfer first!">Confirm Payment</button>
+        <button type="button" id="bank-transfer-confirm" class="btn btn-primary" data-toggle="tooltip" title="Make sure you&rsquo;ve initiated your transfer first!">Confirm Payment</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -70,19 +78,39 @@
 {% block scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.5.4/bootstrap-select.min.js"></script>
 <script type="text/javascript">
-    $(".selectpicker").selectpicker();
-    $('#confirm').tooltip();
+  function generateReference(length) {
+    var choices = 'abcdefghijklmnopqrstuvwxyz234567'; // Base32 characters
+    var string = "";
+    for(i = 0; i < length; i++) {
+      string += choices[Math.floor((Math.random() * 32))]; // random number between 1 and 32
+    }
+    return string;
+  }
 
-    $("#payments").submit(function(event) {
-        var method = $("#method").val();
-        if (method == 1) {         // Bank Transfer
-            $("#bank-transfer").modal();
-        } else if (method == 2) {  // Bitcoin
+  function formatCurrency(total) {
+      return '$' + parseFloat(total, 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();
+  }
 
-        } else if (method == 3) {  // Credit Card
+  $(".selectpicker").selectpicker();
+  $('#bank-transfer-confirm').tooltip();
 
-        }
-        event.preventDefault();
-    });
+  $("#payments").submit(function(event) {
+      var method = $("#method").val();
+      if (method == 0) {         // Bank Transfer
+          $("#bank-transfer-amount").text(formatCurrency($("#amount").val()));
+          $("#bank-transfer-reference").text(generateReference(6));
+          $("#bank-transfer").modal();
+      } else if (method == 1) {  // Bitcoin
+
+      } else if (method == 2) {  // Credit Card
+
+      }
+      event.preventDefault();
+  });
+
+  $("#bank-transfer-confirm").click(function() {
+    $("#reference").val($("#bank-transfer-reference").text());
+    $("#payments").unbind('submit').submit();
+  });
 </script>
 {% endblock %}

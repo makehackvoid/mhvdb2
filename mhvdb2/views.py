@@ -1,8 +1,8 @@
 from mhvdb2 import app
-from mhvdb2.models import Entity
+from mhvdb2.models import Entity, Payment
 from flask import render_template, request, flash
 import re
-from datetime import date
+from datetime import date, datetime
 from peewee import DoesNotExist
 
 
@@ -62,6 +62,70 @@ def signup_post():
 @app.route('/payments/', methods=['GET'])
 def payments_get():
     return render_template('payments.html')
+
+
+@app.route('/payments/', methods=['POST'])
+def payments_post():
+    # Get inputs from form
+    amount = request.form["amount"].strip()
+    email = request.form["email"].strip()
+    method = request.form["method"].strip()
+    type = request.form["type"].strip()
+    notes = request.form["notes"].strip()
+    reference = request.form["reference"].strip()
+
+
+    # Validate inputs
+    valid = True
+
+    if not amount or not amount.isdigit() or int(amount) <=0:
+        flash("Sorry, you need to provide a valid amount.", 'danger')
+        valid = False
+    if not re.match("[^@\s]+@[^@\s]+", email):
+        flash("Sorry, you need to provide a valid email address.", 'danger')
+        valid = False
+    if not type or not type.isdigit() or int(type) > 2:
+        flash("Sorry, you need to provide a valid payment type.", 'danger')
+        valid = False
+    if not method or not method.isdigit() or int(method) > 2:
+        flash("Sorry, you need to provide a valid payment method.", 'danger')
+        valid = False
+    if not reference:
+        flash("Sorry, you need to provide a reference.", 'danger')
+        valid = False
+
+    entity = None
+    try: 
+        Entity.get(Entity.email == email)
+    except DoesNotExist: 
+        flash("Sorry, you need to provide a valid member's email address.", 'danger')
+        valid = False
+
+    if not valid:
+        return render_template('payments.html', amount=amount, email=email,
+            method=method, type=type, notes=notes, reference=reference)
+
+    # Cajole the post data into integers
+    amount = int(amount)
+    type = int(type)
+    method = int(method)
+
+    # Create payment
+    payment = Payment()
+    payment.time = datetime.now()
+    payment.entity = Entity.get(Entity.email == email)
+    payment.amount = amount
+    payment.source = method
+    payment.is_donation = type != 0
+    payment.notes = notes
+    if method == 0: # Bank transfer
+        payment.bank_reference = reference
+    payment.pending = True
+    payment.save()
+
+    flash("Thank you!", "success")
+
+    return payments_get()
 
 
 @app.route('/admin/')
