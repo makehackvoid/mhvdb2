@@ -22,17 +22,22 @@ def signup_post():
     email = request.form["email"].strip()
     phone = request.form["phone"].strip()
 
-    flashes = members.validate(name, email, phone)
+    errors = members.validate(name, email, phone)
 
-    if len(flashes) > 0: #this means that an error has occured
-        for f in flashes:
-            flash(f, 'danger')
+    # Check if the "agree" checkbox was ticked
+    try:
+        agree = request.form["agree"]
+    except KeyError:
+        errors.append("You must agree to the terms and conditions!")
 
-        return render_template('signup.html'), 400
+    if len(errors) > 0: # This means that an error has occured
+        for e in errors:
+            flash(e, 'danger')
+
+        return render_template('signup.html', name=name, email=email, phone=phone), 400
 
     try:
-        member = Entity.get(Entity.email == email)
-        members.update(member, name, email, phone)
+        members.update(name, email, phone)
         flash("Thanks for renewing, your details have been updated!", "success")
     except DoesNotExist:
         members.create(name, email, phone)
@@ -53,17 +58,11 @@ def payments_post():
     notes = request.form["notes"].strip()
     reference = request.form["reference"].strip()
 
-    flashes = payments.validate(amount, email, method, type, notes, reference)
+    errors = payments.validate(amount, email, method, type, notes, reference)
 
-    entity = None
-    try: 
-        entity = Entity.get(Entity.email == email)
-    except DoesNotExist: 
-        flashes.append("Sorry, you need to provide a valid member's email address.")
-
-    if len(flashes) > 0: #this means that an error has occured
-        for f in flashes:
-            flash(f, 'danger')
+    if len(errors) > 0: # this means that an error has occured
+        for e in errors:
+            flash(e, 'danger')
         return render_template('payments.html', amount=amount, email=email,
             method=method, type=type, notes=notes, reference=reference), 400
     
@@ -72,7 +71,7 @@ def payments_post():
     type = int(type)
     method = int(method)
 
-    payments.create(amount, entity, method, type, notes, reference)
+    payments.create(amount, email, method, type, notes, reference)
     flash("Thank you!", "success")
 
     return payments_get()

@@ -7,15 +7,15 @@ from peewee import DoesNotExist
 
 
 def validate(name, email, phone):
-    flashes = []
+    errors = []
     if not name:
-        flashes.append("Sorry, you need to provide a name.")
+        errors.append("Sorry, you need to provide a name.")
     if not phone:
-        flashes.append("Sorry, you need to provide a phone number.")
+        errors.append("Sorry, you need to provide a phone number.")
     if not re.match("[^@\s]+@[^@\s]+", email):
-        flashes.append("Sorry, you need to provide an email address.")
+        errors.append("Sorry, you need to provide an email address.")
 
-    return flashes
+    return errors
 
 def create(name, email, phone):
     member = Entity()
@@ -28,7 +28,10 @@ def create(name, email, phone):
 
     return member.save()
 
-def update(member, name, email, phone):
+# Update via email or member object
+def update(name, email, phone, member=None):
+    if(member == None): 
+        member = Entity.get(Entity.email == email)
     member.name = name
     member.email = email
     member.phone = phone
