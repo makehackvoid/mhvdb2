@@ -1,4 +1,4 @@
-from mhvdb2 import app, database
+from mhvdb2 import database
 from peewee import *
 
 
@@ -33,5 +33,5 @@ class Payment(BaseModel):
     source = IntegerField(choices=[(0, 'Other'), (1, 'Bank Transfer')])
     is_donation = BooleanField()  # For members, donation vs payment for goods
     notes = TextField(null=True)
-    bank_reference = CharField(null=True) # For bank transfers
-    pending = BooleanField() 
+    bank_reference = CharField(null=True)  # For bank transfers
+    pending = BooleanField()

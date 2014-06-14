@@ -1,7 +1,6 @@
-import os
 from mhvdb2 import app
 import unittest
-import tempfile
+
 
 class FlaskrTestCase(unittest.TestCase):
 
@@ -20,8 +19,8 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.post('/signup/', data={
             "name": "Foo Bar",
             "email": "foobar@example.com",
-            "phone": "123456789"}
-            , follow_redirects = True)
+            "phone": "123456789"},
+            follow_redirects=True)
 
         self.assertTrue(rv.status_code == 200)
 
@@ -29,12 +28,12 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.post('/signup/', data={
             "name": "foobar",
             "email": "foobar",
-            "phone": "123456789"}
-            , follow_redirects = True)
+            "phone": "123456789"},
+            follow_redirects=True)
 
         self.assertTrue(rv.status_code == 400)
 
-        rv = self.app.post('/signup/', follow_redirects = True)
+        rv = self.app.post('/signup/', follow_redirects=True)
         self.assertTrue(rv.status_code == 400)
 
     def test_payment_get(self):
@@ -46,17 +45,17 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.post('/signup/', data={
             "name": "Alice",
             "email": "alice@example.com",
-            "phone": "123456789"}
-            , follow_redirects = True)
+            "phone": "123456789"},
+            follow_redirects=True)
 
         rv = self.app.post('/payments/', data={
-            "amount":12,
-            "email":"alice@example.com",
-            "method":0,
-            "type":0,
-            "notes":"This is my first payment",
-            "reference":"alice"}
-            , follow_redirects = True)
+            "amount": 12,
+            "email": "alice@example.com",
+            "method": 0,
+            "type": 0,
+            "notes": "This is my first payment",
+            "reference": "alice"},
+            follow_redirects=True)
 
         self.assertTrue(rv.status_code == 200)
 
@@ -65,15 +64,14 @@ class FlaskrTestCase(unittest.TestCase):
             "first-name": "Foobar",
             "last-name": "foobar",
             "email": "foobar",
-            "phone": "123456789"}
-            , follow_redirects = True)
+            "phone": "123456789"},
+            follow_redirects=True)
 
         self.assertTrue(rv.status_code == 400)
 
-        rv = self.app.post('/signup/', follow_redirects = True)
+        rv = self.app.post('/signup/', follow_redirects=True)
         self.assertTrue(rv.status_code == 400)
 
 
 if __name__ == '__main__':
     unittest.main()
-

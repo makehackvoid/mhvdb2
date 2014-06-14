@@ -1,14 +1,12 @@
-from mhvdb2 import app
-from mhvdb2.models import Entity, Payment
-from flask import render_template, request, flash
+from mhvdb2.models import Payment
 import re
-from datetime import date, datetime
-from peewee import DoesNotExist
+from datetime import datetime
+
 
 def validate(amount, email, method, type, notes, reference):
     flashes = []
 
-    if not amount or not amount.isdigit() or int(amount) <=0:
+    if not amount or not amount.isdigit() or int(amount) <= 0:
         flashes.append("Sorry, you need to provide a valid amount.")
     if not re.match("[^@\s]+@[^@\s]+", email):
         flashes.append("Sorry, you need to provide a valid email address.")
@@ -20,9 +18,10 @@ def validate(amount, email, method, type, notes, reference):
         flashes.append("Sorry, you need to provide a reference.")
 
     return flashes
-   
+
+
 def create(amount, entity, method, type, notes, reference):
-  
+
     # Create payment
     payment = Payment()
     payment.time = datetime.now()
@@ -31,8 +30,7 @@ def create(amount, entity, method, type, notes, reference):
     payment.source = method
     payment.is_donation = type != 0
     payment.notes = notes
-    if method == 0: # Bank transfer
+    if method == 0:  # Bank transfer
         payment.bank_reference = reference
     payment.pending = True
     payment.save()
-

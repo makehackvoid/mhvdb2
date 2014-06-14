@@ -1,10 +1,7 @@
 from mhvdb2 import app
 from mhvdb2.models import Entity
 from flask import render_template, request, flash
-import re
-from datetime import date
 from peewee import DoesNotExist
-import json
 from mhvdb2.resources import payments, members
 
 
@@ -12,9 +9,11 @@ from mhvdb2.resources import payments, members
 def index():
     return render_template('index.html')
 
+
 @app.route('/signup/', methods=['GET'])
 def signup_get():
     return render_template('signup.html')
+
 
 @app.route('/signup/', methods=['POST'])
 def signup_post():
@@ -24,7 +23,7 @@ def signup_post():
 
     flashes = members.validate(name, email, phone)
 
-    if len(flashes) > 0: #this means that an error has occured
+    if len(flashes) > 0:  # this means that an error has occured
         for f in flashes:
             flash(f, 'danger')
 
@@ -33,16 +32,19 @@ def signup_post():
     try:
         member = Entity.get(Entity.email == email)
         members.update(member, name, email, phone)
-        flash("Thanks for renewing, your details have been updated!", "success")
+        flash("Thanks for renewing, your details have been updated!",
+              "success")
     except DoesNotExist:
         members.create(name, email, phone)
         flash("Thanks for registering!", "success")
 
     return signup_get()
 
+
 @app.route('/payments/', methods=['GET'])
 def payments_get():
     return render_template('payments.html')
+
 
 @app.route('/payments/', methods=['POST'])
 def payments_post():
@@ -56,17 +58,19 @@ def payments_post():
     flashes = payments.validate(amount, email, method, type, notes, reference)
 
     entity = None
-    try: 
+    try:
         entity = Entity.get(Entity.email == email)
-    except DoesNotExist: 
-        flashes.append("Sorry, you need to provide a valid member's email address.")
+    except DoesNotExist:
+        flashes.append(
+            "Sorry, you need to provide a valid member's email address.")
 
-    if len(flashes) > 0: #this means that an error has occured
+    if len(flashes) > 0:  # this means that an error has occured
         for f in flashes:
             flash(f, 'danger')
         return render_template('payments.html', amount=amount, email=email,
-            method=method, type=type, notes=notes, reference=reference), 400
-    
+                               method=method, type=type, notes=notes,
+                               reference=reference), 400
+
     # Cajole the post data into integers
     amount = int(amount)
     type = int(type)
@@ -77,8 +81,8 @@ def payments_post():
 
     return payments_get()
 
+
 @app.route('/admin/')
 def admin():
     members = Entity.select().where(Entity.is_member)
     return render_template('admin.html', members=members)
-
