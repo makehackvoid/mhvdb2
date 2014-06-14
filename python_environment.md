@@ -29,8 +29,8 @@ In .git/config I have:
 
 ```
 [remote "upstream"]
-	url = https://github.com/makehackvoid/mhvdb2.git
-	fetch = +refs/heads/*:refs/remotes/upstream/*
-        fetch = +refs/pull/*/head:refs/remotes/upstream/pr/*
+    url = https://github.com/makehackvoid/mhvdb2.git
+    fetch = +refs/heads/*:refs/remotes/upstream/*
+    fetch = +refs/pull/*/head:refs/remotes/upstream/pr/*
 ```
 
