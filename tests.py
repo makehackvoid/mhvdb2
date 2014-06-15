@@ -32,28 +32,28 @@ class FlaskrTestCase(unittest.TestCase):
 
         # No phone number
         data = valid.copy()
-        data["phone"] = ""
+        data["phone"] = None
         rv = self.app.post(endpoint, data=data)
         self.assertEqual(rv.status_code, 200,
             "Incorrect status code when valid data is submitted without phone")
 
         # Missing name
         data = valid.copy()
-        data["name"] = ""
+        data["name"] = None
         rv = self.app.post(endpoint, data=data)
         self.assertEqual(rv.status_code, 400,
                          "Incorrect status code when name is missing")
 
         # Missing email
         data = valid.copy()
-        data["email"] = ""
+        data["email"] = None
         rv = self.app.post(endpoint, data=data)
         self.assertEqual(rv.status_code, 400,
                          "Incorrect status code when email is missing")
 
         # Missing agreement
         data = valid.copy()
-        data["agree"] = ""
+        data["agree"] = None
         rv = self.app.post(endpoint, data=data)
         self.assertEqual(rv.status_code, 400,
                          "Incorrect status code when user doesn't agree")
@@ -99,7 +99,7 @@ class FlaskrTestCase(unittest.TestCase):
 
         # No notes
         data = valid.copy()
-        data["notes"] = ""
+        data["notes"] = None
         rv = self.app.post(endpoint, data=data)
         self.assertEqual(rv.status_code, 200,
                          "Incorrect status code when notes is empty")
@@ -120,7 +120,7 @@ class FlaskrTestCase(unittest.TestCase):
 
         # Missing reference
         data = valid.copy()
-        data["reference"] = ""
+        data["reference"] = None
         rv = self.app.post(endpoint, data=data)
         self.assertEqual(rv.status_code, 400,
                          "Incorrect status code when reference is missing")
