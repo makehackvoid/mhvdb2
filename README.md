@@ -4,7 +4,7 @@ MHVDBv2
 
 [![Build Status](https://travis-ci.org/makehackvoid/mhvdb2.svg?branch=master)](https://travis-ci.org/makehackvoid/mhvdb2)
 
-Version 0.0.1 (we use semver)
+Version 0.0.1 (using [semver](http://semver.org) versioning)
 
 The goal of this project is to create a replacement for MHVDB. The system will store the details of members, and transactions to and from the organisation. It will allow users to sign up as members, update their details, and pay money. It will allow admins to create incoming and outgoing transactions, and view reports on members and transactions.
 
@@ -42,3 +42,8 @@ Views
    - View members
    - View other entities
    - View payments *(filter by entity and date range)*
+
+Contributing to project
+-----------------------
+
+Contributions are welcome, details of how to setup development environment and suggested workflow are in [contributing.md](contributing.md).

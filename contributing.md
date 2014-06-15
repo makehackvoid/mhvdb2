@@ -1,3 +1,7 @@
+#Contributing to mhvdb2
+
+Please make your own fork the repository and use pull requests to submit changes. This lets [TravicCi](https://travis-ci.org/makehackvoid/mhvdb2) check for errors before the changes are committed to master.
+
 ##Python Environment
 
 To get a python3 virtualenvwrapper project I installed python3 (and virtualenvwrapper), checked where it was using
@@ -26,7 +30,7 @@ Once it is setup, to stop defaulting to python3, unset the python env variable u
 This has left my old environments using python 2.7 and the new one using 3.4.1
 
 
-##GitRemotes for testing
+##Git remotes for testing
 
 Fork the reporitory to your own account so that you can make pull requests. Clone it to your computer. 
 
