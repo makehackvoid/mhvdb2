@@ -5,28 +5,9 @@
 {% block content %}
 <h1>Admin</h1>
 <p>This will be a super mega awesome dashboard with lots of pretty JS graphs and stuff. Promise.</p>
-<p>For now, here's a table of all members:</p>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email Address</th>
-            <th>Phone Number</th>
-            <th>Signed Up</th>
-            <th>Last Agreement Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for member in members %}
-        <tr>
-            <td>{{ member.name }}</td>
-            <td>{{ member.email }}</td>
-            <td>{{ member.phone }}</td>
-            <td>{{ member.joined_date }}</td>
-            <td>{{ member.agreement_date }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-
-</table>
+<p>For now, here's some links to other pages:</p>
+<ul>
+  <li><a href='/admin/members'>List of Members</a></li>
+  <li><a href='/admin/transactions'>List of Transactions</a></li>
+</ul>
 {% endblock %}
