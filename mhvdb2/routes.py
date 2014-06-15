@@ -90,10 +90,12 @@ def payments_post():
 def admin():
     return render_template('admin.html')
 
+
 @app.route('/admin/members')
 def admin_members():
     members = Entity.select().where(Entity.is_member)
     return render_template('admin/members.html', members=members)
+
 
 @app.route('/admin/transactions')
 def admin_transactions():

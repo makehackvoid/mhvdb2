@@ -1,5 +1,5 @@
 from flask import Flask, g
-from peewee import *
+from peewee import *   # noqa
 
 app = Flask(__name__)
 app.config.from_object('settings')
@@ -17,7 +17,7 @@ def after_request(response):
     g.db.close()
     return response
 
-import mhvdb2.routes
+import mhvdb2.routes   # noqa
 
 from mhvdb2.models import Entity, Payment
 

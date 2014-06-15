@@ -35,7 +35,7 @@ class FlaskrTestCase(unittest.TestCase):
         data["phone"] = None
         rv = self.app.post(endpoint, data=data)
         self.assertEqual(rv.status_code, 200,
-            "Incorrect status code when valid data is submitted without phone")
+                         "Incorrect status code when valid data is submitted without phone")
 
         # Missing name
         data = valid.copy()

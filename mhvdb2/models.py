@@ -1,5 +1,5 @@
 from mhvdb2 import database
-from peewee import *
+from peewee import *   # noqa
 
 
 class BaseModel(Model):
