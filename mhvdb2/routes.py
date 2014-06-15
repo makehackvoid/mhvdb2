@@ -1,5 +1,5 @@
 from mhvdb2 import app
-from mhvdb2.models import Entity
+from mhvdb2.models import Entity, Payment
 from flask import render_template, request, flash
 from peewee import DoesNotExist
 from mhvdb2.resources import payments, members
@@ -83,5 +83,14 @@ def payments_post():
 
 @app.route('/admin/')
 def admin():
+    return render_template('admin.html')
+
+@app.route('/admin/members')
+def admin_members():
     members = Entity.select().where(Entity.is_member)
-    return render_template('admin.html', members=members)
+    return render_template('admin_members.html', members=members)
+
+@app.route('/admin/transactions')
+def admin_transactions():
+    transactions = Payment.select()
+    return render_template('admin_transactions.html', transactions=transactions)
