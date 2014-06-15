@@ -88,9 +88,17 @@ def admin():
 @app.route('/admin/members')
 def admin_members():
     members = Entity.select().where(Entity.is_member)
+<<<<<<< HEAD
     return render_template('admin/members.html', members=members)
+=======
+    return render_template('admin_members.html', members=members)
+>>>>>>> 6b27620b134538528648b52eb7a02bbda8594950
 
 @app.route('/admin/transactions')
 def admin_transactions():
     transactions = Payment.select()
+<<<<<<< HEAD
     return render_template('admin/transactions.html', transactions=transactions)
+=======
+    return render_template('admin_transactions.html', transactions=transactions)
+>>>>>>> 6b27620b134538528648b52eb7a02bbda8594950
