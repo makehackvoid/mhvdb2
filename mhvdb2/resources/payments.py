@@ -6,27 +6,32 @@ from datetime import date, datetime
 from peewee import DoesNotExist
 
 def validate(amount, email, method, type, notes, reference):
-    flashes = []
+    errors = []
 
     if not amount or not amount.isdigit() or int(amount) <=0:
-        flashes.append("Sorry, you need to provide a valid amount.")
+        errors.append("Sorry, you need to provide a valid amount.")
     if not re.match("[^@\s]+@[^@\s]+", email):
-        flashes.append("Sorry, you need to provide a valid email address.")
+        errors.append("Sorry, you need to provide a valid email address.")
+    else: # Valid email, so check that they're a member
+        try: 
+            entity = Entity.get(Entity.email == email)
+        except DoesNotExist: 
+            errors.append("Sorry, you need to provide a valid member's email address.")
     if not type or not type.isdigit() or int(type) > 2:
-        flashes.append("Sorry, you need to provide a valid payment type.")
+        errors.append("Sorry, you need to provide a valid payment type.")
     if not method or not method.isdigit() or int(method) > 2:
-        flashes.append("Sorry, you need to provide a valid payment method.")
+        errors.append("Sorry, you need to provide a valid payment method.")
     if not reference:
-        flashes.append("Sorry, you need to provide a reference.")
+        errors.append("Sorry, you need to provide a reference.")
 
-    return flashes
+    return errors
    
-def create(amount, entity, method, type, notes, reference):
+def create(amount, email, method, type, notes, reference):
   
     # Create payment
     payment = Payment()
     payment.time = datetime.now()
-    payment.entity = entity
+    payment.entity = Entity.get(Entity.email == email)
     payment.amount = amount
     payment.source = method
     payment.is_donation = type != 0

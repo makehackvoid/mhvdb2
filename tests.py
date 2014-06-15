@@ -20,7 +20,8 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.post('/signup/', data={
             "name": "Foo Bar",
             "email": "foobar@example.com",
-            "phone": "123456789"}
+            "phone": "123456789",
+            "agree": "true"}
             , follow_redirects = True)
 
         self.assertTrue(rv.status_code == 200)
@@ -29,7 +30,8 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.post('/signup/', data={
             "name": "foobar",
             "email": "foobar",
-            "phone": "123456789"}
+            "phone": "123456789", 
+            "agree": "true"}
             , follow_redirects = True)
 
         self.assertTrue(rv.status_code == 400)
@@ -46,7 +48,8 @@ class FlaskrTestCase(unittest.TestCase):
         rv = self.app.post('/signup/', data={
             "name": "Alice",
             "email": "alice@example.com",
-            "phone": "123456789"}
+            "phone": "123456789",
+            "agree": "true"}
             , follow_redirects = True)
 
         rv = self.app.post('/payments/', data={
@@ -65,7 +68,8 @@ class FlaskrTestCase(unittest.TestCase):
             "first-name": "Foobar",
             "last-name": "foobar",
             "email": "foobar",
-            "phone": "123456789"}
+            "phone": "123456789",
+            "agree": ""}
             , follow_redirects = True)
 
         self.assertTrue(rv.status_code == 400)
