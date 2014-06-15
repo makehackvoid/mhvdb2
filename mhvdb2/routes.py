@@ -1,8 +1,8 @@
 from mhvdb2 import app
 from mhvdb2.models import Entity, Payment
-from flask import render_template, request, flash
+from flask import render_template, request, flash, redirect, url_for
 from peewee import DoesNotExist
-from mhvdb2.resources import payments, members
+from mhvdb2.resources import payments, members, entities
 
 
 def get_post_value(key):
@@ -107,3 +107,58 @@ def admin_transactions():
 def admin_entities():
     entities = Entity.select().where(Entity.is_member == False)          # noqa
     return render_template('admin/entities.html', entities=entities)
+
+
+@app.route('/admin/entities/new', methods=['GET'])
+def entity_new_get():
+    return render_template('admin/entity.html', new=True)
+
+
+@app.route('/admin/entities/new', methods=['POST'])
+def entity_new_post():
+    name = get_post_value("name")
+    email = get_post_value("email")
+    phone = get_post_value("phone")
+
+    errors = entities.validate(name, email, phone)
+
+    if len(errors) > 0:  # This means that an error has occured
+        for e in errors:
+            flash(e, 'danger')
+        return render_template('admin/entity.html', new=True, name=name, email=email,
+                               phone=phone), 400
+
+    entity_id = entities.create(name, email, phone)
+    flash("Entity created", "success")
+
+    return redirect(url_for('entity_get', entity_id=entity_id))
+
+
+@app.route('/admin/entities/<int:entity_id>', methods=['GET'])
+def entity_get(entity_id):
+    entity = entities.get(entity_id)
+    if entity:
+        return render_template('admin/entity.html', name=entity.name, email=entity.email,
+                               phone=entity.phone)
+    else:
+        return redirect(url_for('admin_entities'))
+
+
+@app.route('/admin/entities/<int:entity_id>', methods=['POST'])
+def entity_post(entity_id):
+    name = get_post_value("name")
+    email = get_post_value("email")
+    phone = get_post_value("phone")
+
+    errors = entities.validate(name, email, phone)
+
+    if len(errors) > 0:  # This means that an error has occured
+        for e in errors:
+            flash(e, 'danger')
+        return render_template('admin/entity.html', entity_id=entity_id, name=name, email=email,
+                               phone=phone), 400
+
+    entities.update(entity_id, name, email, phone)
+    flash("Entity updated", "success")
+
+    return redirect(url_for('admin_entities'))
