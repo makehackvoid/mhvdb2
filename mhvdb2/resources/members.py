@@ -7,7 +7,7 @@ def validate(name, email, phone):
     errors = []
     if not name:
         errors.append("Sorry, you need to provide a name.")
-    if not re.match("[^@\s]+@[^@\s]+", email):
+    if not email or not re.match("[^@\s]+@[^@\s]+", email):
         errors.append("Sorry, you need to provide an email address.")
 
     return errors
