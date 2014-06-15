@@ -10,10 +10,11 @@
 <div class='row'>
     <form id="payments" method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
         <div class="form-group">
-            <label for="amount">Payment Amount</label>
+            <label for="amount-dollars">Payment Amount</label>
             <div class="input-group">
               <span class="input-group-addon">$</span>
-              <input required type="number" step="0.01" class="form-control" name="amount" id="amount" value="{{amount}}">
+              <input required type="number" step="0.01" class="form-control" name="amount-dollars" id="amount-dollars">
+              <input type="hidden" name="amount" id="amount" value="{{amount}}">
             </div>
         </div>
         <div class="form-group">
@@ -97,7 +98,7 @@
   $("#payments").submit(function(event) {
       var method = $("#method").val();
       if (method == 0) {         // Bank Transfer
-          $("#bank-transfer-amount").text(formatCurrency($("#amount").val()));
+          $("#bank-transfer-amount").text(formatCurrency($("#amount-dollars").val()));
           $("#bank-transfer-reference").text(generateReference(6));
           $("#bank-transfer").modal();
       } else if (method == 1) {  // Bitcoin
@@ -110,7 +111,16 @@
 
   $("#bank-transfer-confirm").click(function() {
     $("#reference").val($("#bank-transfer-reference").text());
+    // Set hidden cents amount from editable dollars amount
+    $("#amount").val($("#amount-dollars").val() * 100);
     $("#payments").unbind('submit').submit();
+  });
+
+  // Load dollar amount from hidden cents amount
+  $(document).ready(function() {
+    var amount = $("#amount").val();
+    if(amount !== "")
+      $("#amount-dollars").val(amount / 100);
   });
 </script>
 {% endblock %}
