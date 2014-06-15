@@ -32,7 +32,7 @@ def signup_post():
 
     # Check if the "agree" checkbox was ticked
     if get_post_value("agree") is None:
-        errors.append("You must agree to the terms and conditions!")
+        errors.append("You must agree to the rules and code of conduct to become a member!")
 
     if len(errors) > 0:  # This means that an error has occured
         for e in errors:
