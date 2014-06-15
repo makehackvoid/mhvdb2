@@ -1,10 +1,7 @@
 from mhvdb2 import app
 from mhvdb2.models import Entity
 from flask import render_template, request, flash
-import re
-from datetime import date
 from peewee import DoesNotExist
-import json
 from mhvdb2.resources import payments, members
 
 
@@ -12,9 +9,11 @@ from mhvdb2.resources import payments, members
 def index():
     return render_template('index.html')
 
+
 @app.route('/signup/', methods=['GET'])
 def signup_get():
     return render_template('signup.html')
+
 
 @app.route('/signup/', methods=['POST'])
 def signup_post():
@@ -30,24 +29,28 @@ def signup_post():
     except KeyError:
         errors.append("You must agree to the terms and conditions!")
 
-    if len(errors) > 0: # This means that an error has occured
+    if len(errors) > 0:  # This means that an error has occured
         for e in errors:
             flash(e, 'danger')
 
-        return render_template('signup.html', name=name, email=email, phone=phone), 400
+        return render_template('signup.html', name=name, email=email,
+                               phone=phone), 400
 
     try:
         members.update(name, email, phone)
-        flash("Thanks for renewing, your details have been updated!", "success")
+        flash("Thanks for renewing, your details have been updated!",
+              "success")
     except DoesNotExist:
         members.create(name, email, phone)
         flash("Thanks for registering!", "success")
 
     return signup_get()
 
+
 @app.route('/payments/', methods=['GET'])
 def payments_get():
     return render_template('payments.html')
+
 
 @app.route('/payments/', methods=['POST'])
 def payments_post():
@@ -60,12 +63,13 @@ def payments_post():
 
     errors = payments.validate(amount, email, method, type, notes, reference)
 
-    if len(errors) > 0: # this means that an error has occured
+    if len(errors) > 0:  # this means that an error has occured
         for e in errors:
             flash(e, 'danger')
         return render_template('payments.html', amount=amount, email=email,
-            method=method, type=type, notes=notes, reference=reference), 400
-    
+                               method=method, type=type, notes=notes,
+                               reference=reference), 400
+
     # Cajole the post data into integers
     amount = int(amount)
     type = int(type)
@@ -76,8 +80,8 @@ def payments_post():
 
     return payments_get()
 
+
 @app.route('/admin/')
 def admin():
     members = Entity.select().where(Entity.is_member)
     return render_template('admin.html', members=members)
-

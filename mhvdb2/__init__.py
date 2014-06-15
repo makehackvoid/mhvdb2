@@ -17,8 +17,9 @@ def after_request(response):
     g.db.close()
     return response
 
-from mhvdb2.models import Entity, Payment
 import mhvdb2.routes
+
+from mhvdb2.models import Entity, Payment
 
 database.connect()
 if not Entity.table_exists():

@@ -1,9 +1,6 @@
-from mhvdb2 import app
-from mhvdb2.models import Entity, Payment
-from flask import render_template, request, flash
+from mhvdb2.models import Entity
 import re
-from datetime import date, datetime
-from peewee import DoesNotExist
+from datetime import date
 
 
 def validate(name, email, phone):
@@ -17,6 +14,7 @@ def validate(name, email, phone):
 
     return errors
 
+
 def create(name, email, phone):
     member = Entity()
     member.is_member = True
@@ -28,9 +26,10 @@ def create(name, email, phone):
 
     return member.save()
 
+
 # Update via email or member object
 def update(name, email, phone, member=None):
-    if(member == None): 
+    if member is None:
         member = Entity.get(Entity.email == email)
     member.name = name
     member.email = email
@@ -38,4 +37,3 @@ def update(name, email, phone, member=None):
     member.agreement_date = date.today()
 
     return member.save()
-
