@@ -18,7 +18,7 @@ def validate(amount, email, method, type, notes, reference):
             errors.append("Sorry, you need to provide a valid member's email address.")
     if not type or not type.isdigit() or int(type) > 2:
         errors.append("Sorry, you need to provide a valid payment type.")
-    if not method or not method.isdigit() or int(method) > 2:
+    if not method or not method.isdigit() or int(method) > 0:
         errors.append("Sorry, you need to provide a valid payment method.")
     if not reference:
         errors.append("Sorry, you need to provide a reference.")

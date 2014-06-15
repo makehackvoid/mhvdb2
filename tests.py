@@ -9,38 +9,66 @@ class FlaskrTestCase(unittest.TestCase):
 
     def test_index(self):
         rv = self.app.get('/')
-        self.assertTrue(rv.status_code == 200)
+        self.assertEqual(rv.status_code, 200,
+                         "Incorrect status code when retrieving page")
 
     def test_signup_get(self):
         rv = self.app.get('/signup/')
-        self.assertTrue(rv.status_code == 200)
+        self.assertEqual(rv.status_code, 200,
+                         "Incorrect status code when retrieving page")
 
     def test_signup_post(self):
-        rv = self.app.post('/signup/', data={
+        endpoint = '/signup/'
+        valid = {
             "name": "Foo Bar",
             "email": "foobar@example.com",
             "phone": "123456789",
-            "agree": "true"},
-            follow_redirects=True)
+            "agree": "true"
+        }
 
-        self.assertTrue(rv.status_code == 200)
+        rv = self.app.post(endpoint, data=valid)
+        self.assertEqual(rv.status_code, 200,
+                         "Incorrect status code when valid data is submitted")
 
-        # Invalid email, should return invalid
-        rv = self.app.post('/signup/', data={
-            "name": "foobar",
-            "email": "foobar",
-            "phone": "123456789",
-            "agree": "true"},
-            follow_redirects=True)
+        # No phone number
+        data = valid.copy()
+        data["phone"] = None
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 200,
+            "Incorrect status code when valid data is submitted without phone")
 
-        self.assertTrue(rv.status_code == 400)
+        # Missing name
+        data = valid.copy()
+        data["name"] = None
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code when name is missing")
 
-        rv = self.app.post('/signup/', follow_redirects=True)
-        self.assertTrue(rv.status_code == 400)
+        # Missing email
+        data = valid.copy()
+        data["email"] = None
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code when email is missing")
+
+        # Missing agreement
+        data = valid.copy()
+        data["agree"] = None
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code when user doesn't agree")
+
+        # Invalid email
+        data = valid.copy()
+        data["email"] = "google.com"
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code when email is malformed")
 
     def test_payment_get(self):
-        rv = self.app.get('/signup/')
-        self.assertTrue(rv.status_code == 200)
+        rv = self.app.get('/payments/')
+        self.assertEqual(rv.status_code, 200,
+                         "Incorrect status code when retrieving page")
 
     def test_payment_post(self):
         # Make sure there is a signed up user
@@ -48,34 +76,80 @@ class FlaskrTestCase(unittest.TestCase):
             "name": "Alice",
             "email": "alice@example.com",
             "phone": "123456789",
-            "agree": "true"},
-            follow_redirects=True)
+            "agree": "true"})
+        self.assertEqual(rv.status_code, 200)
+        #  Don't bother keeping going if our signup failed
+        if rv.status_code != 200:
+            return
 
-        rv = self.app.post('/payments/', data={
-            "amount": 12,
+        endpoint = "/payments/"
+        valid = {
+            "amount": "12",
             "email": "alice@example.com",
-            "method": 0,
-            "type": 0,
+            "method": "0",
+            "type": "0",
             "notes": "This is my first payment",
-            "reference": "alice"},
-            follow_redirects=True)
+            "reference": "alice"
+        }
 
-        self.assertTrue(rv.status_code == 200)
+        # Valid baseline
+        rv = self.app.post(endpoint, data=valid)
+        self.assertEqual(rv.status_code, 200,
+                         "Incorrect status code when valid data is submitted")
 
-        # Invalid email, should return invalid
-        rv = self.app.post('/signup/', data={
-            "first-name": "Foobar",
-            "last-name": "foobar",
-            "email": "foobar",
-            "phone": "123456789",
-            "agree": "true"},
-            follow_redirects=True)
+        # No notes
+        data = valid.copy()
+        data["notes"] = None
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 200,
+                         "Incorrect status code when notes is empty")
 
-        self.assertTrue(rv.status_code == 400)
+        # Invalid email format
+        data = valid.copy()
+        data["email"] = "not-an-email.com"
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code when email is malformed")
 
-        rv = self.app.post('/signup/', follow_redirects=True)
-        self.assertTrue(rv.status_code == 400)
+        # Valid email, data member
+        data = valid.copy()
+        data["email"] = "bob@example.com"
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code when email is not a member")
 
+        # Missing reference
+        data = valid.copy()
+        data["reference"] = None
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code when reference is missing")
+
+        # Decimal amount, should be integer cents
+        data = valid.copy()
+        data["amount"] = "123.45"
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code when amount is a decimal")
+
+        # data method
+        data = valid.copy()
+        data["method"] = "1"  # Current valid methods: 0
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code on unsupported method")
+
+        # data type
+        data = valid.copy()
+        data["type"] = "3"  # Current valid types: 0, 1, 2
+        rv = self.app.post(endpoint, data=data)
+        self.assertEqual(rv.status_code, 400,
+                         "Incorrect status code on unsupported type")
+
+    def test_admin_get(self):
+        rv = self.app.get('/admin/')
+        self.assertEqual(rv.status_code, 200,
+                         "Incorrect status code when retrieving page")
 
 if __name__ == '__main__':
     unittest.main()

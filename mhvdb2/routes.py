@@ -5,6 +5,13 @@ from peewee import DoesNotExist
 from mhvdb2.resources import payments, members
 
 
+def get_post_value(key):
+    try:
+        return request.form[key]
+    except KeyError:
+        return None
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -17,16 +24,14 @@ def signup_get():
 
 @app.route('/signup/', methods=['POST'])
 def signup_post():
-    name = request.form["name"].strip()
-    email = request.form["email"].strip()
-    phone = request.form["phone"].strip()
+    name = get_post_value("name")
+    email = get_post_value("email")
+    phone = get_post_value("phone")
 
     errors = members.validate(name, email, phone)
 
     # Check if the "agree" checkbox was ticked
-    try:
-        agree = request.form["agree"]
-    except KeyError:
+    if get_post_value("agree") is None:
         errors.append("You must agree to the terms and conditions!")
 
     if len(errors) > 0:  # This means that an error has occured
@@ -54,12 +59,12 @@ def payments_get():
 
 @app.route('/payments/', methods=['POST'])
 def payments_post():
-    amount = request.form["amount"].strip()
-    email = request.form["email"].strip()
-    method = request.form["method"].strip()
-    type = request.form["type"].strip()
-    notes = request.form["notes"].strip()
-    reference = request.form["reference"].strip()
+    amount = get_post_value("amount")
+    email = get_post_value("email")
+    method = get_post_value("method")
+    type = get_post_value("type")
+    notes = get_post_value("notes")
+    reference = get_post_value("reference")
 
     errors = payments.validate(amount, email, method, type, notes, reference)
 
