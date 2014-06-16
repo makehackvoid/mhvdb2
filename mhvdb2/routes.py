@@ -105,5 +105,5 @@ def admin_transactions():
 
 @app.route('/admin/entities')
 def admin_entities():
-    entities = Entity.select().where(Entity.is_member == 0)
+    entities = Entity.select().where(Entity.is_member == False)          # noqa
     return render_template('admin/entities.html', entities=entities)
