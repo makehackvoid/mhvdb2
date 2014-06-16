@@ -1,0 +1,31 @@
+{% extends "_layout.html" %}
+{% set active_page = "admin_entities" %}
+
+{% block title %}Admin - Members{% endblock %}
+{% block content %}
+<h1>Admin - Entities</h1>
+<p>Here's a table of all entities that aren't members:</p>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email Address</th>
+            <th>Phone Number</th>
+            <th>Signed Up</th>
+            <th>Last Agreement Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entity in entities %}
+        <tr>
+            <td>{{ entity.name }}</td>
+            <td>{{ entity.email }}</td>
+            <td>{{ entity.phone }}</td>
+            <td>{{ entity.joined_date }}</td>
+            <td>{{ entity.agreement_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+{% endblock %}
