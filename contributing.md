@@ -8,7 +8,7 @@ So that other people know what you are working on, either assign an existing iss
 
 ## PEP8 compliance
 
-Travis is now checking pep8 and pylint compliance before running the application tests using flake8. The ```setup.cfg``` includes the settings for flake8 - at this stage just that lines can be up to 99 characters instead of the default 80. You can install flake8 locally using ```pip install flake8``` or your editor may have a flake8 plugin.
+Travis is now checking pep8 and PyFlakes compliance before running the application tests using flake8. The ```setup.cfg``` includes the settings for flake8 - at this stage just that lines can be up to 99 characters instead of the default 80. You can install flake8 locally using ```pip install flake8``` or your editor may have a flake8 plugin.
 
 ##Python Environment
 
