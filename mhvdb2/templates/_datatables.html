@@ -1,0 +1,13 @@
+{% extends "_layout.html" %}
+{% block template_head %}
+<link rel="stylesheet" href="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.css">
+{% endblock %}
+{% block template_scripts %}
+<script src="//cdn.datatables.net/1.10.0/js/jquery.dataTables.js"></script>
+<script src="//cdn.datatables.net/plug-ins/be7019ee387/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.datatable').dataTable();
+    } );
+</script>
+{% endblock %}
