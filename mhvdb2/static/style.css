@@ -13,3 +13,7 @@ input.copy {
 	color: #333 !important;
 	width: auto;
 }
+
+.dataTables_filter  input {
+	margin-left: 1ex;
+}
