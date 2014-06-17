@@ -10,4 +10,4 @@ install:
 before_script:
   - flake8 .
 script:
-  - python tests.py
+  - python runtests.py
