@@ -101,3 +101,9 @@ def admin_members():
 def admin_transactions():
     transactions = Payment.select()
     return render_template('admin/transactions.html', transactions=transactions)
+
+
+@app.route('/admin/entities')
+def admin_entities():
+    entities = Entity.select().where(Entity.is_member == False)          # noqa
+    return render_template('admin/entities.html', entities=entities)
