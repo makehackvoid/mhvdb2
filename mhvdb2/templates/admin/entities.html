@@ -1,5 +1,6 @@
-{% extends "_layout.html" %}
+{% extends "_datatables.html" %}
 {% set active_page = "admin_entities" %}
+{% set datatables = True %}
 
 {% block title %}Admin - Members{% endblock %}
 {% block head %}
@@ -11,7 +12,8 @@
 <a class="btn btn-primary pull-right" href="{{url_for('entity_new_get')}}">
     <i class="fa fa-plus"></i> New Entity
 </a>
-<table class="table table-hover">
+<div class="clearfix" style="margin-bottom: 20px"></div>
+<table class="table table-hover datatable">
     <thead>
         <tr>
             <th>Name</th>
