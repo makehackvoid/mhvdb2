@@ -28,7 +28,7 @@ def create(name, email, phone):
 # Update via email or member object
 def update(name, email, phone, member=None):
     if member is None:
-        member = Entity.get(Entity.email == email)
+        member = Entity.get(Entity.email == email and Entity.is_member)
     member.name = name
     member.email = email
     member.phone = phone
