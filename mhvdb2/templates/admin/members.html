@@ -2,9 +2,16 @@
 {% set active_page = "admin_members" %}
 
 {% block title %}Admin - Members{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
+{% endblock %}
 {% block content %}
 <h1>Admin - Members</h1>
 <p>Here's a table of all members:</p>
+<a class="btn btn-primary pull-right" href="{{url_for('member_new_get')}}">
+    <i class="fa fa-plus"></i> New Member
+</a>
+<div class="clearfix" style="margin-bottom: 20px"></div>
 <table class="table table-hover datatable">
     <thead>
         <tr>
@@ -15,10 +22,10 @@
             <th>Last Agreement Date</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody data-link="row" class="rowlink">
         {% for member in members %}
         <tr>
-            <td>{{ member.name }}</td>
+            <td><a href="{{url_for('member_get', member_id=member.id)}}">{{ member.name }}</a></td>
             <td>{{ member.email }}</td>
             <td>{{ member.phone }}</td>
             <td>{{ member.joined_date }}</td>
@@ -28,4 +35,7 @@
     </tbody>
 
 </table>
+{% endblock %}
+{% block scripts %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
 {% endblock %}
