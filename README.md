@@ -1,4 +1,4 @@
-MHVDBv2 EXAMPLE EDITR!!!!!!!
+MHVDBv2
 =======
 *(needs a better name)*
 
