@@ -18,6 +18,9 @@ We are using [TravisCi](https://travis-ci.org/makehackvoid/mhvdb2) to run tests 
 
 [TravisCi](https://travis-ci.org/makehackvoid/mhvdb2) is now checking pep8 and PyFlakes compliance before running the application tests using flake8. The ```setup.cfg``` includes the settings for flake8 - at this stage just that lines can be up to 99 characters instead of the default 80. You can install flake8 locally using ```pip install flake8``` or your editor may have a flake8 plugin.
 
+## Documentation
+
+We are using [Sphinx](http://http://sphinx-doc.org/) for documentation. You can install sphinx locally using ```pip install sphinx```.
 
 ##Python virtual environment
 
@@ -31,14 +34,14 @@ then told virtualenvwrapper to use that python by setting
 export VIRTUALENV_PYTHON=/usr/local/bin/python3
 ```
 
-then if you don't already have a project directory, use  
-```mkproject mhvdb2``` 
+then if you don't already have a project directory, use
+```mkproject mhvdb2```
 to create it or, if it already exists, change to the project directory and use
 
 ```
 mkvirtualenv mhvdb2
 setvirtualenvproject
-``` 
+```
 
 Once it is setup, to stop defaulting to python3, unset the python env variable using
 
@@ -49,7 +52,7 @@ This has left my old environments using python 2.7 and the new one using 3.4.1
 
 ##Git remotes for testing
 
-Fork the repository to your own account so that you can make pull requests. Clone it to your computer. 
+Fork the repository to your own account so that you can make pull requests. Clone it to your computer.
 
 On your computer add a new remote 'upstream' so you can update your fork from the original makehackvoid project. If you want to be able to see (fetch) and pull down pull requests from the original makehackvoid project for testing, add a second fetch line to .git/config
 ```fetch = +refs/pull/*/head:refs/remotes/upstream/pr/*```
