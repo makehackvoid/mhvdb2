@@ -1,0 +1,18 @@
+{% extends "_layout.html" %}
+{% set active_page = "" %}
+
+{% block title %}Login{% endblock %}
+{% block content %}
+<h1>Login</h1>
+<form method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input required type="email" class="form-control" name="email" id="email" value="{{email}}">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input required type="password" class="form-control" name="password" id="password">
+    </div>
+    <button type="submit" class="btn btn-default">Login</button>
+</form>
+{% endblock %}

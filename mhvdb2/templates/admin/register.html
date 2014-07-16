@@ -1,0 +1,44 @@
+{% extends "_layout.html" %}
+{% set active_page = "" %}
+
+{% block title %}New Admin{% endblock %}
+{% block content %}
+<h1>New Admin</h1>
+<form method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input required type="text" class="form-control" name="name" id="name" value="{{name}}">
+    </div>
+    <div class="form-group">
+        <label for="email">Email Address</label>
+        <input required type="email" class="form-control" name="email" id="email" value="{{email}}">
+    </div>
+    <div class="row">
+    <div class="form-group col-xs-6">
+        <label for="password">Password</label>
+        <input required type="password" class="form-control" name="password" id="password">
+    </div>
+    <div class="form-group col-xs-6">
+        <label for="confirm-password">Confirm Password</label>
+        <input required type="password" class="form-control" name="confirm-password" id="confirm-password">
+    </div>
+    </div>
+    <button type="submit" class="btn btn-default">Register</button>
+</form>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+window.onload = function () {
+    document.getElementById("password").onchange = validatePassword;
+    document.getElementById("confirm-password").onchange = validatePassword;
+};
+function validatePassword(){
+    var pass1=document.getElementById("password");
+    var pass2=document.getElementById("confirm-password");
+    if(pass1.value!=pass2.value)
+        pass2.setCustomValidity("Password doesn't match");
+    else
+        pass2.setCustomValidity('');
+}
+</script>
+{% endblock %}

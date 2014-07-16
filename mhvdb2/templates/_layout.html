@@ -1,7 +1,8 @@
 {% set navigation_bar = [
     ('/', 'index', 'Home', 'home'),
     ('/signup/', 'signup', 'Sign Up', 'user'),
-    ('/payments/', 'payments', 'Payments', 'money')
+    ('/payments/', 'payments', 'Payments', 'money'),
+    ('/admin/', 'admin', 'Admin', 'dashboard')
 ] -%}
 
 {% set active_page = active_page|default('index') -%}
@@ -49,7 +50,13 @@
                                 </li>
                             {% endfor %}
                         </ul>
-                        <ul class="nav navbar-nav navbar-right"><li{% if active_page == "admin" %} class="active"{% endif %}><a href="/admin/"><i class="fa fa-fw fa-dashboard"></i> Admin</a></li></ul>
+                        <p class="navbar-text navbar-right">
+                        {% if current_user.is_authenticated() %}
+                        Signed in as {{current_user.name}} – <a href="{{ url_for('logout') }}">Log out</a>
+                        {% else %}
+                        <a href="{{ url_for('login') }}">Log in</a>
+                        {% endif %}
+                        </p>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
             </div>
