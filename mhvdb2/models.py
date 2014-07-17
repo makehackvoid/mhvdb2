@@ -7,6 +7,16 @@ class BaseModel(Model):
         database = database
 
 
+class User(BaseModel):
+    """
+    A User is someone who has special access to the system that requires
+    a login (only administrators, in this case)
+    """
+    name = CharField()
+    email = CharField()
+    password = CharField()
+
+
 class Entity(BaseModel):
     """
     An Entity sends money to the organisation or recieves money from the
