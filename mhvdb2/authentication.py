@@ -39,6 +39,12 @@ def register_user(name, email, password):
     if len(password) < 6:
         errors.append("Password must be 6 characters or longer")
 
+    if not name:
+        errors.append("Name is required")
+
+    if not email:
+        errors.append("Email is required")
+
     if len(errors) == 0:
         user = User()
         user.name = name
