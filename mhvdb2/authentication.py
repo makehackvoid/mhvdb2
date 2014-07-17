@@ -36,7 +36,7 @@ def register_user(name, email, password):
     if not unique:
         errors.append("A user with that email address already exists")
 
-    if len(password) <= 6:
+    if len(password) < 6:
         errors.append("Password must be 6 characters or longer")
 
     if len(errors) == 0:

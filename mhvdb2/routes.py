@@ -39,7 +39,7 @@ def login_post():
         return redirect(next)
     else:
         flash("Incorrect email or password.", "danger")
-        return login()
+        return render_template("admin/login.html", email=email)
 
 
 @app.route("/admin/register", methods=["GET"])
@@ -65,7 +65,7 @@ def register_post():
     if len(errors) > 0:  # This means that an error has occured
         for e in errors:
             flash(e, 'danger')
-        return register()
+        return render_template("admin/register.html", name=name, email=email)
     else:
         flash("User registered successfully.", "success")
         return redirect(url_for('register'))
