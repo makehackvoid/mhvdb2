@@ -46,7 +46,7 @@ class PaymentsTestCases(unittest.TestCase):
         self.assertEqual(len(errors), 1)
 
         errors = payments.validate(str(self.amount),
-                                  "not-an-email.com",
+                                   "not-an-email.com",
                                    str(self.method),
                                    str(self.type),
                                    self.notes,
@@ -54,7 +54,7 @@ class PaymentsTestCases(unittest.TestCase):
         self.assertEqual(len(errors), 1)
 
         errors = payments.validate(str(self.amount),
-                                  "not-an-email@",
+                                   "not-an-email@",
                                    str(self.method),
                                    str(self.type),
                                    self.notes,

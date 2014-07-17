@@ -122,10 +122,10 @@ class MembersTestCases(unittest.TestCase):
         member.delete_instance()
 
         member_id = members.create(self.test_member.name,
-                                self.test_member.email,
-                                self.test_member.phone,
-                                None,
-                                self.test_member.agreement_date)
+                                   self.test_member.email,
+                                   self.test_member.phone,
+                                   None,
+                                   self.test_member.agreement_date)
         member = Entity.get(Entity.id == member_id)
         self.assertEqual(member.joined_date, date.today())
         member.delete_instance()

@@ -59,8 +59,8 @@ class EntitiesTestCases(unittest.TestCase):
 
     def test_create(self):
         entity_id = entities.create(self.test_entity.name,
-                                 self.test_entity.email,
-                                 self.test_entity.phone)
+                                    self.test_entity.email,
+                                    self.test_entity.phone)
         entity = Entity.get(Entity.id == entity_id)
 
         self.assertNotEqual(entity.id, self.test_entity.id)
