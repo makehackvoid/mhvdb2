@@ -1,123 +1,162 @@
-from mhvdb2 import app
+from mhvdb2.resources import members
 from mhvdb2.models import Entity
+from datetime import date, timedelta
 import unittest
 
 
-class test_members(unittest.TestCase):
-
+class MembersTestCases(unittest.TestCase):
     def setUp(self):
-        self.app = app.test_client()
-        # Avoid duplicate email conflicts with other tests
-        Entity.drop_table()
-        Entity.create_table()
+        self.test_member = Entity()
+        self.test_member.is_member = True
+        self.test_member.name = "Jane Smith"
+        self.test_member.email = "jane@example.com"
+        self.test_member.phone = "+61 (02) 1234 5678"
+        self.test_member.joined_date = date.today()-timedelta(days=1)
+        self.test_member.agreement_date = date.today()
+        self.test_member.save()
+        self.joined_date = "2014-12-24"
+        self.agreement_date = "2014-12-25"
 
-    def valid_test(self, endpoint, valid):
-        rv = self.app.post(endpoint, follow_redirects=True, data=valid)
-        self.assertEqual(rv.status_code, 200,
-                         "Incorrect status code when valid data is submitted")
+    def tearDown(self):
+        self.test_member.delete_instance()
 
-    # Test that optional fields are optional
-    def optional_tests(self, endpoint, valid):
-        # No phone number
-        data = valid.copy()
-        data["phone"] = None
-        rv = self.app.post(endpoint, follow_redirects=True, data=data)
-        self.assertEqual(rv.status_code, 200,
-                         "Incorrect status code when valid data is submitted without phone")
+    def test_get(self):
+        member = members.get(self.test_member.id)
+        self.assertEqual(member, self.test_member)
 
-    # Test form validation (required is required, formats checked)
-    def validation_tests(self, endpoint, valid):
-        # Missing name
-        data = valid.copy()
-        data["name"] = None
-        rv = self.app.post(endpoint, follow_redirects=True, data=data)
-        self.assertEqual(rv.status_code, 400,
-                         "Incorrect status code when name is missing")
+    def test_get_bad_id(self):
+        member = members.get(12345)
+        self.assertIsNone(member)
 
-        # Missing email
-        data = valid.copy()
-        data["email"] = None
-        rv = self.app.post(endpoint, follow_redirects=True, data=data)
-        self.assertEqual(rv.status_code, 400,
-                         "Incorrect status code when email is missing")
+    def test_validate(self):
+        errors = members.validate(self.test_member.name,
+                                  self.test_member.email,
+                                  self.test_member.phone,
+                                  self.joined_date,
+                                  self.agreement_date)
+        self.assertEqual(len(errors), 0)
 
-        # Invalid email
-        data = valid.copy()
-        data["email"] = "google.com"
-        rv = self.app.post(endpoint, follow_redirects=True, data=data)
-        self.assertEqual(rv.status_code, 400,
-                         "Incorrect status code when email is malformed")
+    def test_validate_name(self):
+        errors = members.validate("",
+                                  self.test_member.email,
+                                  self.test_member.phone,
+                                  self.joined_date,
+                                  self.agreement_date)
+        self.assertEqual(len(errors), 1)
 
-        # Invalid joined date
-        data = valid.copy()
-        data["joined_date"] = "not-really-a-date"
-        rv = self.app.post(endpoint, follow_redirects=True, data=data)
-        self.assertEqual(rv.status_code, 400,
-                         "Incorrect status code when joined date is malformed")
+    def test_validate_email(self):
+        errors = members.validate(self.test_member.name,
+                                  "",
+                                  self.test_member.phone,
+                                  self.joined_date,
+                                  self.agreement_date)
+        self.assertEqual(len(errors), 1)
 
-        # Invalid agreement date
-        data = valid.copy()
-        data["agreement_date"] = "not-really-a-date"
-        rv = self.app.post(endpoint, follow_redirects=True, data=data)
-        self.assertEqual(rv.status_code, 400,
-                         "Incorrect status code when agreement date is malformed")
+        errors = members.validate(self.test_member.name,
+                                  "not-an-email.com",
+                                  self.test_member.phone,
+                                  self.joined_date,
+                                  self.agreement_date)
+        self.assertEqual(len(errors), 1)
 
-    def test_members_new_get(self):
-        rv = self.app.get('/admin/members/new')
-        self.assertEqual(rv.status_code, 200,
-                         "Incorrect status code when retrieving page")
+        errors = members.validate(self.test_member.name,
+                                  "not-an-email@",
+                                  self.test_member.phone,
+                                  self.joined_date,
+                                  self.agreement_date)
+        self.assertEqual(len(errors), 1)
 
-    def test_members_new_post(self):
-        endpoint = '/admin/members/new'
-        valid = {
-            "name": "Foo Bar",
-            "email": "foobar@example.com",
-            "phone": "123456789",
-            "joined_date": "2014-01-01",
-            "agreement_date": "2014-01-01"
-        }
+    def test_validate_phone(self):
+        errors = members.validate(self.test_member.name,
+                                  self.test_member.email,
+                                  "",
+                                  self.joined_date,
+                                  self.agreement_date)
+        self.assertEqual(len(errors), 0)
 
-        self.valid_test(endpoint, valid)
+    def test_validate_joined_date(self):
+        errors = members.validate(self.test_member.name,
+                                  self.test_member.email,
+                                  self.test_member.phone,
+                                  "2014-12-25",
+                                  self.agreement_date)
+        print(errors)
+        self.assertEqual(len(errors), 0)
 
-        rv = self.app.post(endpoint, data=valid)
-        self.assertEqual(rv.status_code, 400,
-                         "Incorrect status when user with email already exists")
+        errors = members.validate(self.test_member.name,
+                                  self.test_member.email,
+                                  self.test_member.phone,
+                                  "The 25th of December, Stardate 21020",
+                                  self.agreement_date)
+        self.assertEqual(len(errors), 1)
 
-        Entity.delete().where(Entity.email == valid["email"]).execute()
-        self.optional_tests(endpoint, valid)
-        Entity.delete().where(Entity.email == valid["email"]).execute()
-        self.validation_tests(endpoint, valid)
+    def test_validate_agreement_date(self):
+        errors = members.validate(self.test_member.name,
+                                  self.test_member.email,
+                                  self.test_member.phone,
+                                  self.joined_date,
+                                  "2014-12-25")
+        self.assertEqual(len(errors), 0)
 
-    def test_members_existing_get(self):
-        rv = self.app.get('/admin/members/new')
-        self.assertEqual(rv.status_code, 200,
-                         "Incorrect status code when retrieving page")
+        errors = members.validate(self.test_member.name,
+                                  self.test_member.email,
+                                  self.test_member.phone,
+                                  "The 25th of December, Stardate 21020",
+                                  self.agreement_date)
+        self.assertEqual(len(errors), 1)
 
-    def test_members_existing_post(self):
-        valid = {
-            "name": "Foo Bar",
-            "email": "foobar@example.com",
-            "phone": "123456789",
-            "joined_date": "2014-01-01",
-            "agreement_date": "2014-01-01"
-        }
+    def test_create(self):
+        member_id = members.create(self.test_member.name,
+                                   self.test_member.email,
+                                   self.test_member.phone,
+                                   self.test_member.joined_date,
+                                   self.test_member.agreement_date)
+        member = Entity.get(Entity.id == member_id)
 
-        # Create entity for testing
-        member = Entity()
-        member.is_member = True
-        member.name = valid["name"]
-        member.email = valid["email"]
-        member.phone = valid["phone"]
-        member.joined_date = valid["joined_date"]
-        member.agreement_date = valid["agreement_date"]
-        member.save()
+        self.assertNotEqual(member.id, self.test_member.id)
+        self.assertEqual(member.name, self.test_member.name)
+        self.assertEqual(member.email, self.test_member.email)
+        self.assertEqual(member.phone, self.test_member.phone)
+        self.assertEqual(member.joined_date, self.test_member.joined_date)
+        self.assertEqual(member.agreement_date, self.test_member.agreement_date)
+        member.delete_instance()
 
-        endpoint = '/admin/members/{0}'.format(member.id)
+        member_id = members.create(self.test_member.name,
+                                self.test_member.email,
+                                self.test_member.phone,
+                                None,
+                                self.test_member.agreement_date)
+        member = Entity.get(Entity.id == member_id)
+        self.assertEqual(member.joined_date, date.today())
+        member.delete_instance()
 
-        self.valid_test(endpoint, valid)
-        self.optional_tests(endpoint, valid)
-        self.validation_tests(endpoint, valid)
+        member_id = members.create(self.test_member.name,
+                                   self.test_member.email,
+                                   self.test_member.phone,
+                                   self.test_member.joined_date,
+                                   None)
+        member = Entity.get(Entity.id == member_id)
+        self.assertEqual(member.agreement_date, date.today())
+        member.delete_instance()
 
+    def test_update(self):
+        new_name = "Joe Flanders"
+        new_email = "joe@example.com"
+        new_phone = "(04) 9876 5432"
+        new_joined_date = date.today()-timedelta(days=7)
+        new_agreement_date = date.today()-timedelta(days=6)
+        members.update(self.test_member.id,
+                       new_name,
+                       new_email,
+                       new_phone,
+                       new_joined_date,
+                       new_agreement_date)
+        member = Entity.get(Entity.id == self.test_member.id)
+        self.assertEqual(member.name, new_name)
+        self.assertEqual(member.email, new_email)
+        self.assertEqual(member.phone, new_phone)
+        self.assertEqual(member.joined_date, new_joined_date)
+        self.assertEqual(member.agreement_date, new_agreement_date)
 
 if __name__ == '__main__':
     unittest.main()

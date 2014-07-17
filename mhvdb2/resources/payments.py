@@ -40,3 +40,4 @@ def create(amount, email, method, type, notes, reference):
         payment.bank_reference = reference
     payment.pending = True
     payment.save()
+    return payment.id
