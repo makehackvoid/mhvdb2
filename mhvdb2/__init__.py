@@ -5,11 +5,8 @@ app = Flask(__name__)
 app.config.from_object('settings')
 database = SqliteDatabase(app.config['DATABASE'], threadlocals=True)
 
-
-from mhvdb2.authentication import login_manager
-login_manager.init_app(app)
-login_manager.login_view = "login"
-login_manager.login_message_category = "danger"
+from mhvdb2.admin import admin
+app.register_blueprint(admin, url_prefix='/admin')
 
 
 @app.before_request

@@ -31,7 +31,7 @@
         <input data-provide="datepicker" data-date-format="yyyy-mm-dd" type="text" class="form-control" name="agreement_date" id="agreement_date" value="{{agreement_date}}">
     </div>
     <button type="submit" class="btn btn-primary">{% if new %}Create{% else %}Update{% endif %}</button>
-    <a class="btn btn-secondary text    -danger" href="{{url_for('admin_members')}}">Cancel</a>
+    <a class="btn btn-secondary text    -danger" href="{{url_for('.members')}}">Cancel</a>
 </form>
 {% endblock %}
 

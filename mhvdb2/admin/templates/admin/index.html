@@ -7,9 +7,9 @@
 <p>This will be a super mega awesome dashboard with lots of pretty JS graphs and stuff. Promise.</p>
 <p>For now, here's some links to other pages:</p>
 <ul>
-  <li><a href='/admin/members'>List of Members</a></li>
-  <li><a href='/admin/transactions'>List of Transactions</a></li>
-  <li><a href='/admin/entities'>List of Entities (non-member)</a></li>
-  <li><a href='/admin/register'>Add a new administrator</a></li>
+  <li><a href="{{url_for('.members')}}">List of Members</a></li>
+  <li><a href="{{url_for('.transactions')}}">List of Transactions</a></li>
+  <li><a href="{{url_for('.entities')}}">List of Entities (non-member)</a></li>
+  <li><a href="{{url_for('.register')}}">Add a new administrator</a></li>
 </ul>
 {% endblock %}
