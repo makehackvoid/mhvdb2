@@ -1,6 +1,6 @@
 from mhvdb2 import app
-from mhvdb2 import authentication
-from mhvdb2.authentication import User
+from mhvdb2.admin import authentication
+from mhvdb2.admin.authentication import User
 import unittest
 
 
@@ -11,7 +11,7 @@ class AuthenticationTests(unittest.TestCase):
         self.name = "Joe Bloggs"
         self.email = "joe@example.com"
         self.password = "123abc"
-        print(User.delete().where(User.email == self.email).execute())
+        User.delete().where(User.email == self.email).execute()
 
     def test_register(self):
         errors = authentication.register_user(self.name, self.email, self.password)

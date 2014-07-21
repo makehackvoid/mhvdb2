@@ -2,7 +2,7 @@
     ('/', 'index', 'Home', 'home'),
     ('/signup/', 'signup', 'Sign Up', 'user'),
     ('/payments/', 'payments', 'Payments', 'money'),
-    ('/admin/', 'admin', 'Admin', 'dashboard')
+    ('/admin/', 'admin.index', 'Admin', 'dashboard')
 ] -%}
 
 {% set active_page = active_page|default('index') -%}
@@ -52,9 +52,9 @@
                         </ul>
                         <p class="navbar-text navbar-right">
                         {% if current_user.is_authenticated() %}
-                        Signed in as {{current_user.name}} – <a href="{{ url_for('logout') }}">Log out</a>
+                        Signed in as {{current_user.name}} – <a href="{{ url_for('admin.logout') }}">Log out</a>
                         {% else %}
-                        <a href="{{ url_for('login') }}">Log in</a>
+                        <a href="{{ url_for('admin.login') }}">Log in</a>
                         {% endif %}
                         </p>
                     </div><!--/.nav-collapse -->

@@ -1,15 +1,16 @@
 {% extends "_datatables.html" %}
-{% set active_page = "admin_members" %}
+{% set active_page = "admin_entities" %}
+{% set datatables = True %}
 
 {% block title %}Admin - Members{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css">
 {% endblock %}
 {% block content %}
-<h1>Admin - Members</h1>
-<p>Here's a table of all members:</p>
-<a class="btn btn-primary pull-right" href="{{url_for('member_new_get')}}">
-    <i class="fa fa-plus"></i> New Member
+<h1>Admin - Entities</h1>
+<p class="pull-left">Here's a table of all entities that aren't members:</p>
+<a class="btn btn-primary pull-right" href="{{url_for('.entity_new')}}">
+    <i class="fa fa-plus"></i> New Entity
 </a>
 <div class="clearfix" style="margin-bottom: 20px"></div>
 <table class="table table-hover datatable">
@@ -18,18 +19,14 @@
             <th>Name</th>
             <th>Email Address</th>
             <th>Phone Number</th>
-            <th>Signed Up</th>
-            <th>Last Agreement Date</th>
         </tr>
     </thead>
     <tbody data-link="row" class="rowlink">
-        {% for member in members %}
+        {% for entity in entities %}
         <tr>
-            <td><a href="{{url_for('member_get', member_id=member.id)}}">{{ member.name }}</a></td>
-            <td>{{ member.email }}</td>
-            <td>{{ member.phone }}</td>
-            <td>{{ member.joined_date }}</td>
-            <td>{{ member.agreement_date }}</td>
+            <td><a href="{{url_for('.entity', id=entity.id)}}">{{ entity.name }}</a></td>
+            <td>{{ entity.email }}</td>
+            <td>{{ entity.phone }}</td>
         </tr>
         {% endfor %}
     </tbody>

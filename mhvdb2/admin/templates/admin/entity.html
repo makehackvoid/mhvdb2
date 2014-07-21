@@ -18,6 +18,6 @@
         <input type="text" class="form-control" name="phone" id="phone" value="{{phone}}">
     </div>
     <button type="submit" class="btn btn-primary">{% if new %}Create{% else %}Update{% endif %}</button>
-    <a class="btn btn-secondary text-danger" href="{{url_for('admin_entities')}}">Cancel</a>
+    <a class="btn btn-secondary text-danger" href="{{url_for('.entities')}}">Cancel</a>
 </form>
 {% endblock %}
