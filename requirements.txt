@@ -5,3 +5,4 @@ MarkupSafe==0.18
 Werkzeug==0.9.4
 itsdangerous==0.23
 peewee==2.2.1
+requests==2.3.0
