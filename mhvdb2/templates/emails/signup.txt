@@ -1,0 +1,14 @@
+Hi {{name}},
+
+Thanks for becoming a member of MakeHackVoid!
+
+Keep in touch with the MHV community by joining our mailing list, IRC channel, and Facebook group, as well as following us on Twitter and Facebook. Find the details for all these and more on our contacts page: https://makehackvoid.com/contacts
+
+MHV has a wiki which contains lots of information about the space, upcoming workshops & training, project logs, and lots more: https://wiki.makehackvoid.com
+
+Finally, please take a moment to read our various rules and policies - they are a little dry, but they make sure that MHV is a fun and safe place for everyone: https://wiki.makehackvoid.com/policy:start
+
+
+Thanks,
+MaHaVo
+The MakeHackVoid Robot
