@@ -1,4 +1,4 @@
-from mhvdb2 import app
+from mhvdb2 import app, mailer
 from flask import render_template, request, flash
 from mhvdb2.resources import payments, members
 
@@ -43,8 +43,10 @@ def signup_post():
                                phone=phone), 400
 
     members.create(name, email, phone)
-    flash("Thanks for registering!", "success")
 
+    flash("Thanks for registering!", "success")
+    mailer.send(email, "Welcome to MakeHackVoid!",
+                render_template("emails/signup.txt", name=name))
     return signup_get()
 
 
