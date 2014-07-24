@@ -1,5 +1,17 @@
 {% extends "_datatables.html" %}
 {% set active_page = "admin_members" %}
+{% block datatable_options %}
+    "columnDefs": [{
+        "targets": 2,
+        "render": function (data, type, full, meta) {
+            if (type == "display") {
+                return "$" + (data / 100).toFixed(2);
+            }
+
+            return data;
+        }
+    }]
+{% endblock %}
 
 {% block title %}Admin - Transactions{% endblock %}
 {% block content %}
