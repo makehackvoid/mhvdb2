@@ -20,6 +20,7 @@
             <th>Phone Number</th>
             <th>Signed Up</th>
             <th>Last Agreement Date</th>
+            <th>Keyholder</th>
         </tr>
     </thead>
     <tbody data-link="row" class="rowlink">
@@ -30,6 +31,7 @@
             <td>{{ member.phone }}</td>
             <td>{{ member.joined_date }}</td>
             <td>{{ member.agreement_date }}</td>
+            <td>{{ member.is_keyholder }}</td>
         </tr>
         {% endfor %}
     </tbody>

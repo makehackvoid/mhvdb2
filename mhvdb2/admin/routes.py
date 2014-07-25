@@ -101,8 +101,10 @@ def member_new_post():
     phone = get_post_value("phone")
     joined_date = get_post_value("joined_date")
     agreement_date = get_post_value("agreement_date")
+    is_keyholder = get_post_value("is_keyholder")
 
-    errors = resources.members.validate(name, email, phone, joined_date, agreement_date)
+    errors = resources.members.validate(name, email, phone, joined_date,
+                                        agreement_date, is_keyholder)
 
     if resources.members.exists(email):
         errors.append("There is already a member with that email address!")
@@ -111,12 +113,13 @@ def member_new_post():
         for e in errors:
             flash(e, 'danger')
         return render_template('admin/member.html', name=name, email=email, phone=phone,
-                               joined_date=joined_date, agreement_date=agreement_date), 400
+                               joined_date=joined_date, agreement_date=agreement_date,
+                               is_keyholder=is_keyholder), 400
 
     joined_date = datetime.strptime(joined_date, '%Y-%m-%d').date()
     agreement_date = datetime.strptime(agreement_date, '%Y-%m-%d').date()
 
-    resources.members.create(name, email, phone, joined_date, agreement_date)
+    resources.members.create(name, email, phone, joined_date, agreement_date, is_keyholder)
     flash("Member created", "success")
 
     return redirect(url_for('.members'))
@@ -129,7 +132,8 @@ def member(id):
     if member:
         return render_template('admin/member.html', name=member.name, email=member.email,
                                phone=member.phone, joined_date=member.joined_date,
-                               agreement_date=member.agreement_date)
+                               agreement_date=member.agreement_date,
+                               is_keyholder=member.is_keyholder)
     else:
         return redirect(url_for('.members'))
 
@@ -142,8 +146,10 @@ def member_post(id):
     phone = get_post_value("phone")
     joined_date = get_post_value("joined_date")
     agreement_date = get_post_value("agreement_date")
+    is_keyholder = get_post_value("is_keyholder")
 
-    errors = resources.members.validate(name, email, phone, joined_date, agreement_date)
+    errors = resources.members.validate(name, email, phone, joined_date,
+                                        agreement_date, is_keyholder)
 
     if resources.members.exists(email, id):
         errors.append("There is already a member with that email address!")
@@ -153,12 +159,13 @@ def member_post(id):
             flash(e, 'danger')
         return render_template('admin/member.html', id=id, name=name, email=email,
                                phone=phone, joined_date=joined_date,
-                               agreement_date=agreement_date), 400
+                               agreement_date=agreement_date,
+                               is_keyholder=is_keyholder), 400
 
     joined_date = datetime.strptime(joined_date, '%Y-%m-%d').date()
     agreement_date = datetime.strptime(agreement_date, '%Y-%m-%d').date()
 
-    resources.members.update(id, name, email, phone, joined_date, agreement_date)
+    resources.members.update(id, name, email, phone, joined_date, agreement_date, is_keyholder)
 
     flash("Member updated", "success")
 
