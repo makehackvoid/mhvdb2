@@ -19,7 +19,7 @@ def exists(email, member_id=None):
         return Entity.select().where((Entity.email == email) & Entity.is_member).count() == 1
 
 
-def validate(name, email, phone, joined_date=None, agreement_date=None):
+def validate(name, email, phone, joined_date=None, agreement_date=None, is_keyholder=None):
     errors = []
     if not name:
         errors.append("Sorry, you need to provide a name.")
@@ -39,7 +39,7 @@ def validate(name, email, phone, joined_date=None, agreement_date=None):
     return errors
 
 
-def create(name, email, phone, joined_date=None, agreement_date=None):
+def create(name, email, phone, joined_date=None, agreement_date=None, is_keyholder=None):
     if joined_date is None:
         joined_date = date.today()
     if agreement_date is None:
@@ -51,18 +51,27 @@ def create(name, email, phone, joined_date=None, agreement_date=None):
     member.phone = phone
     member.joined_date = joined_date
     member.agreement_date = agreement_date
+    if is_keyholder is None:
+        member.is_keyholder = False
+    else:
+        member.is_keyholder = is_keyholder
 
     member.save()
 
     return member.id
 
 
-def update(member_id, name, email, phone, joined_date=None, agreement_date=None):
+def update(member_id, name, email, phone, joined_date=None, agreement_date=None,
+           is_keyholder=False):
     member = Entity.get((Entity.id == member_id) & Entity.is_member)
     member.name = name
     member.email = email
     member.phone = phone
     member.joined_date = joined_date
     member.agreement_date = agreement_date
+    if is_keyholder is None:
+        member.is_keyholder = False
+    else:
+        member.is_keyholder = is_keyholder
 
     return member.save()

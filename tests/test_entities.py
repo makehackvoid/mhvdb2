@@ -10,6 +10,7 @@ class EntitiesTestCases(unittest.TestCase):
         self.test_entity.name = "Jane Smith"
         self.test_entity.email = "jane@example.com"
         self.test_entity.phone = "+61 (02) 1234 5678"
+        self.test_entity.is_keyholder = False
         self.test_entity.save()
 
     def tearDown(self):

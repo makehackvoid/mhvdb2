@@ -26,6 +26,7 @@ def create(name, email, phone):
     entity.name = name
     entity.email = email
     entity.phone = phone
+    entity.is_keyholder = False
     entity.save()
     return entity.id
 

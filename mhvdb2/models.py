@@ -29,6 +29,7 @@ class Entity(BaseModel):
     reminder_date = DateField(null=True)  # When to send reminder to member
     joined_date = DateField(null=True)  # date the person first joined
     agreement_date = DateField(null=True)  # date the person agreed to rules
+    is_keyholder = BooleanField(null=True)  # Does the member have a key?
 
 
 class Payment(BaseModel):
