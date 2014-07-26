@@ -1,6 +1,7 @@
 from mhvdb2 import app, mailer
-from flask import render_template, request, flash
+from flask import render_template, request, flash, redirect, url_for
 from mhvdb2.resources import payments, members
+from datetime import datetime
 
 
 def get_post_value(key):
@@ -48,6 +49,60 @@ def signup_post():
     mailer.send(email, "Welcome to MakeHackVoid!",
                 render_template("emails/signup.txt", name=name))
     return signup_get()
+
+
+@app.route('/renew/', methods=['GET'])
+def renew():
+    return render_template("renew.html")
+
+
+@app.route('/renew/', methods=['POST'])
+def renew_post():
+    email = get_post_value("email")
+
+    if members.exists(email):
+        token = members.create_token(email)
+        url = url_for("renew_token", token=token, _external=True)
+        mailer.send(email, "MakeHackVoid Membership Renewal",
+                    render_template("emails/renew.txt", url=url))
+        flash("Please the confirmation link sent to your email address to continue.", "info")
+        return render_template("renew.html")
+    else:
+        flash("Sorry, no user exists with that email address.", "danger")
+        return render_template("renew.html", email=email)
+
+
+@app.route('/renew/<token>', methods=['GET'])
+def renew_token(token):
+    member = members.authenticate_token(token)
+    if member is None:
+        flash("Invalid token", "danger")
+        return redirect(url_for("renew"))
+    return render_template("renew_token.html", name=member.name,
+                           email=member.email, phone=member.phone)
+
+
+@app.route('/renew/<token>', methods=['POST'])
+def renew_token_post(token):
+    member = members.authenticate_token(token)
+    name = get_post_value("name")
+    email = get_post_value("email")
+    phone = get_post_value("phone")
+    if member is None:
+        flash("Invalid token", "danger")
+        return redirect(url_for("renew"))
+
+    errors = members.validate(name, email, phone)
+    if len(errors) > 0:  # This means that an error has occured
+        for e in errors:
+            flash(e, 'danger')
+        return render_template('renew_token.html', name=name, email=email, phone=phone), 400
+
+    members.update(member.id, name, email, phone, None, datetime.now())
+    members.invalidate_token(member.id)
+    flash("Your membership has been renewed.", "success")
+
+    return redirect(url_for("index"))
 
 
 @app.route('/payments/', methods=['GET'])

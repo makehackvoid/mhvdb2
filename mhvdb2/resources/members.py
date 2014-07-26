@@ -1,7 +1,9 @@
 from mhvdb2.models import Entity
 import re
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from peewee import DoesNotExist
+import string
+import random
 
 
 def get(member_id):
@@ -67,11 +69,47 @@ def update(member_id, name, email, phone, joined_date=None, agreement_date=None,
     member.name = name
     member.email = email
     member.phone = phone
-    member.joined_date = joined_date
-    member.agreement_date = agreement_date
+    if joined_date is not None:
+        member.joined_date = joined_date
+    if agreement_date is not None:
+        member.agreement_date = agreement_date
     if is_keyholder is None:
         member.is_keyholder = False
     else:
         member.is_keyholder = is_keyholder
 
     return member.save()
+
+
+def create_token(email):
+    member = Entity.get((Entity.email == email) & Entity.is_member)
+    member.token = __generate_token()
+    member.token_expiry = datetime.now() + timedelta(hours=24)
+    member.save()
+    return member.token
+
+
+def authenticate_token(token):
+    try:
+        member = Entity.get(Entity.token == token)
+        if (member.token_expiry > datetime.now()):
+            return member
+    except:
+        pass
+    return None  # no such token for member, or token is expired
+
+
+def invalidate_token(id):
+    member = Entity.get(Entity.id == id)
+    member.token = None
+    member.token_expiry = None
+    member.save()
+
+
+def __generate_token():
+    alphabet = string.ascii_lowercase + string.digits
+    size = 16
+
+    # http://stackoverflow.com/a/2257449
+    token = ''.join(random.choice(alphabet) for _ in range(size))
+    return token
