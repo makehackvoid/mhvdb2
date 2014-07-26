@@ -2,6 +2,7 @@ from mhvdb2.resources import members
 from mhvdb2.models import Entity
 from datetime import date, timedelta
 import unittest
+from freezegun import freeze_time
 
 
 class MembersTestCases(unittest.TestCase):
@@ -88,7 +89,6 @@ class MembersTestCases(unittest.TestCase):
                                   "2014-12-25",
                                   self.agreement_date,
                                   self.test_member.is_keyholder)
-        print(errors)
         self.assertEqual(len(errors), 0)
 
         errors = members.validate(self.test_member.name,
@@ -175,6 +175,36 @@ class MembersTestCases(unittest.TestCase):
         self.assertEqual(member.joined_date, new_joined_date)
         self.assertEqual(member.agreement_date, new_agreement_date)
         self.assertEqual(member.is_keyholder, new_is_keyholder)
+
+    def test_create_token(self):
+        token = members.create_token(self.test_member.email)
+        member = members.get(self.test_member.id)
+        self.assertEqual(token, member.token)
+
+    def test_authenticate_token(self):
+        token = members.create_token(self.test_member.email)
+        valid = members.authenticate_token(token)
+        self.assertTrue(valid)
+
+    def test_authenticate_token_expiry(self):
+        with freeze_time("2012-01-14 10:00:00"):
+            token = members.create_token(self.test_member.email)
+
+        with freeze_time("2012-01-15 09:59:59"):
+            member = members.authenticate_token(token)
+            self.assertEqual(member, self.test_member)
+
+        with freeze_time("2012-01-15 10:00:01"):
+            member = members.authenticate_token(token)
+            self.assertEqual(member, None)
+
+    def test_invalidate_token(self):
+        members.create_token(self.test_member.email)
+        members.invalidate_token(self.test_member.id)
+        member = members.get(self.test_member.id)
+        self.assertEqual(member.token, None)
+        self.assertEqual(member.token_expiry, None)
+
 
 if __name__ == '__main__':
     unittest.main()

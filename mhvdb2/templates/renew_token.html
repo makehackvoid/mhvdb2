@@ -1,0 +1,30 @@
+{% extends "_layout.html" %}
+{% set active_page = "renew" %}
+
+{% block title %}Renew{% endblock %}
+{% block content %}
+<h1>Renew / Update Details</h1>
+<p>To renew your MakeHackVoid membership, or to update your details, fill in the form below and click Renew. Your MakeHackVoid membership will be valid for one year after renewing.</p>
+<div class="row">
+    <form method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input required type="text" class="form-control" name="name" id="name" value="{{name}}">
+        </div>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input required type="email" class="form-control" name="email" id="email" value="{{email}}">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="text" class="form-control" name="phone" id="phone" value="{{phone}}">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input required id="agree" name="agree" type="checkbox"> I agree to the <a href="https://wiki.makehackvoid.com/policy:rules">rules</a> and <a href="https://wiki.makehackvoid.com/policy:code_of_conduct">code of conduct</a>.
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default">Renew</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+Hi,
+
+Someone (hopefully you!) has requested to renew your MakeHackVoid membership. To update your details and renew your membership, please click on the link below and follow the instructions:
+{{url}}
+
+Thanks,
+MaHaVo
+The MakeHackVoid Robot

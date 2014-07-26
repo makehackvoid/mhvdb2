@@ -1,0 +1,17 @@
+{% extends "_layout.html" %}
+{% set active_page = "renew" %}
+
+{% block title %}Renew{% endblock %}
+{% block content %}
+<h1>Renew / Update Details</h1>
+<p>Your MakeHackVoid membership is valid for one year from when you signed up or last renewed. To extend your membership and update your details, please enter your email address into the form below. You will be sent a confirmation link via email, which will allow you to renew your membership and update your details.</p>
+<div class="row">
+    <form method="POST" role="form" class="col-sm-8 col-md-6 col-lg-5">
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input required type="email" class="form-control" name="email" id="email" value="{{email}}">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>
+{% endblock %}
