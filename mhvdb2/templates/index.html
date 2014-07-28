@@ -3,6 +3,8 @@
 
 {% block title %}Index{% endblock %}
 {% block content %}
-    <h1>Hello, World!</h1>
-    <p>Lorem ipsum dolor sit amet…</p>
+<div class="index-list list-group">
+    <a class="list-group-item" href="{{url_for('signup')}}"><i class="fa fa-fw fa-2x fa-pencil"></i><span>Signup to MakeHackVoid</span></a>
+    <a class="list-group-item" href="{{url_for('renew')}}"><i class="fa fa-fw fa-2x fa-refresh"></i><span>Renew your membership</span></a>
+</div>
 {% endblock %}

@@ -1,6 +1,6 @@
 from mhvdb2 import app, mailer
 from flask import render_template, request, flash, redirect, url_for
-from mhvdb2.resources import payments, members
+from mhvdb2 import resources
 from datetime import datetime
 
 
@@ -17,7 +17,7 @@ def index():
 
 
 @app.route('/signup/', methods=['GET'])
-def signup_get():
+def signup():
     return render_template('signup.html')
 
 
@@ -27,13 +27,13 @@ def signup_post():
     email = get_post_value("email")
     phone = get_post_value("phone")
 
-    errors = members.validate(name, email, phone)
+    errors = resources.members.validate(name, email, phone)
 
     # Check if the "agree" checkbox was ticked
     if get_post_value("agree") is None:
         errors.append("You must agree to the rules and code of conduct to become a member!")
 
-    if members.exists(email):
+    if resources.members.exists(email):
         errors.append("There is already a member with that email address!")
 
     if len(errors) > 0:  # This means that an error has occured
@@ -43,12 +43,12 @@ def signup_post():
         return render_template('signup.html', name=name, email=email,
                                phone=phone), 400
 
-    members.create(name, email, phone)
+    resources.members.create(name, email, phone)
 
     flash("Thanks for registering!", "success")
     mailer.send(email, "Welcome to MakeHackVoid!",
                 render_template("emails/signup.txt", name=name))
-    return signup_get()
+    return signup()
 
 
 @app.route('/renew/', methods=['GET'])
@@ -60,8 +60,8 @@ def renew():
 def renew_post():
     email = get_post_value("email")
 
-    if members.exists(email):
-        token = members.create_token(email)
+    if resources.members.exists(email):
+        token = resources.members.create_token(email)
         url = url_for("renew_token", token=token, _external=True)
         mailer.send(email, "MakeHackVoid Membership Renewal",
                     render_template("emails/renew.txt", url=url))
@@ -74,7 +74,7 @@ def renew_post():
 
 @app.route('/renew/<token>', methods=['GET'])
 def renew_token(token):
-    member = members.authenticate_token(token)
+    member = resources.members.authenticate_token(token)
     if member is None:
         flash("Invalid token", "danger")
         return redirect(url_for("renew"))
@@ -84,7 +84,7 @@ def renew_token(token):
 
 @app.route('/renew/<token>', methods=['POST'])
 def renew_token_post(token):
-    member = members.authenticate_token(token)
+    member = resources.members.authenticate_token(token)
     name = get_post_value("name")
     email = get_post_value("email")
     phone = get_post_value("phone")
@@ -92,21 +92,21 @@ def renew_token_post(token):
         flash("Invalid token", "danger")
         return redirect(url_for("renew"))
 
-    errors = members.validate(name, email, phone)
+    errors = resources.members.validate(name, email, phone)
     if len(errors) > 0:  # This means that an error has occured
         for e in errors:
             flash(e, 'danger')
         return render_template('renew_token.html', name=name, email=email, phone=phone), 400
 
-    members.update(member.id, name, email, phone, None, datetime.now())
-    members.invalidate_token(member.id)
-    flash("Your membership has been renewed.", "success")
+    resources.members.update(member.id, name, email, phone, None, datetime.now())
+    resources.members.invalidate_token(member.id)
+    flash("Your resources.members.ip has been renewed.", "success")
 
     return redirect(url_for("index"))
 
 
 @app.route('/payments/', methods=['GET'])
-def payments_get():
+def payments():
     return render_template('payments.html')
 
 
@@ -119,7 +119,7 @@ def payments_post():
     notes = get_post_value("notes")
     reference = get_post_value("reference")
 
-    errors = payments.validate(amount, email, method, type, notes, reference)
+    errors = resources.payments.validate(amount, email, method, type, notes, reference)
 
     if len(errors) > 0:  # this means that an error has occured
         for e in errors:
@@ -133,7 +133,7 @@ def payments_post():
     type = int(type)
     method = int(method)
 
-    payments.create(amount, email, method, type, notes, reference)
+    resources.payments.create(amount, email, method, type, notes, reference)
     flash("Thank you!", "success")
 
-    return payments_get()
+    return payments()

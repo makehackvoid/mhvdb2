@@ -17,3 +17,20 @@ input.copy {
 .dataTables_filter  input {
 	margin-left: 1ex;
 }
+
+.index-list {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.index-list span {
+    font-size: 1.25em;
+    margin: 5px 0;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.index-list i {
+    margin-right: 15px;
+    margin-top: 5px;
+}
