@@ -3,8 +3,7 @@ from peewee import *   # noqa
 
 app = Flask(__name__)
 
-# app.config.from_object('settings.ProductionConfig')
-app.config.from_object('settings.DevelopmentConfig')
+app.config.from_object('settings')
 
 database = SqliteDatabase(app.config['DATABASE'], threadlocals=True)
 

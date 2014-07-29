@@ -1,21 +1,5 @@
-class Config(object):
-    DEBUG = False
-    TESTING = False
-    DATABASE = "test.db"
-    SECRET_KEY = "test"
-
-
-class ProductionConfig(object):
-    DATABASE = "mhv_members.db"
-    SECRET_KEY = "random secret key here"
-
-
-class DevelopmentConfig(object):
-    DEBUG = True
-
-config = {
-    'development': DevelopmentConfig,
-    'production': ProductionConfig,
-
-    'default': DevelopmentConfig
-}
+DEBUG = True
+DATABASE = "test.db"
+SECRET_KEY = "test"
+MAILGUN_DOMAIN = "makehackvoid.com"
+MAILGUN_API_KEY = ""
