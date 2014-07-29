@@ -2,7 +2,10 @@ from flask import Flask, g
 from peewee import *   # noqa
 
 app = Flask(__name__)
-app.config.from_object('settings')
+
+# app.config.from_object('settings.ProductionConfig')
+app.config.from_object('settings.DevelopmentConfig')
+
 database = SqliteDatabase(app.config['DATABASE'], threadlocals=True)
 
 from mhvdb2.admin import admin
