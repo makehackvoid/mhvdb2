@@ -1,0 +1,5 @@
+DEBUG = True
+DATABASE = "test.db"
+SECRET_KEY = "test"
+MAILGUN_DOMAIN = "makehackvoid.com"
+MAILGUN_API_KEY = ""
