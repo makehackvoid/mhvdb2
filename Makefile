@@ -6,4 +6,4 @@ build:
 	docker build -t="makehackvoid/mhvdb2" .
         
 run:	build
-	docker run -p 8081:80 -t -i -v $(CURDIR):/opt/mhvdb2 makehackvoid/mhvdb2
+	docker run -p 8081:80 -t -i -d -v $(CURDIR):/opt/mhvdb2 makehackvoid/mhvdb2
