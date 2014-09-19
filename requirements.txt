@@ -9,3 +9,4 @@ peewee==2.2.1
 python-dateutil==2.2
 requests==2.3.0
 six==1.7.3
+gunicorn
