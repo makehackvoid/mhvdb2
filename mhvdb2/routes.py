@@ -107,11 +107,16 @@ def renew_token_post(token):
 
 @app.route('/payments/', methods=['GET'])
 def payments():
+    if not app.debug:  # Section is a WIP, redirect if not in debug mode
+        return redirect(url_for("index"))
     return render_template('payments.html')
 
 
 @app.route('/payments/', methods=['POST'])
 def payments_post():
+    if not app.debug:  # Section is a WIP, redirect if not in debug mode
+        return redirect(url_for("index"))
+
     amount = get_post_value("amount")
     email = get_post_value("email")
     method = get_post_value("method")
