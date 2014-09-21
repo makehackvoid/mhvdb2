@@ -12,8 +12,8 @@ def send(to, subject, body):
 
 
 def mailgun_send(to, subject, body):
-    endpoint = "https://api.mailgun.net/v2/{}/messages".format(app["MAILGUN_DOMAIN"])
-    auth = ("api", app["MAILGUN_API_KEY"])
+    endpoint = "https://api.mailgun.net/v2/{}/messages".format(app.config["MAILGUN_DOMAIN"])
+    auth = ("api", app.config["MAILGUN_API_KEY"])
     data = {"from": "MakeHackVoid <noreply@makehackvoid.com>",
             "to": to,
             "subject": subject,
