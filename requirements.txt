@@ -4,9 +4,9 @@ Jinja2==2.7.2
 MarkupSafe==0.18
 Werkzeug==0.9.4
 freezegun==0.1.18
+gunicorn==19.1.1
 itsdangerous==0.23
 peewee==2.2.1
 python-dateutil==2.2
 requests==2.3.0
 six==1.7.3
-gunicorn
