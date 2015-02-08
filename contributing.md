@@ -49,6 +49,9 @@ Once it is setup, to stop defaulting to python3, unset the python env variable u
 
 This has left my old environments using python 2.7 and the new one using 3.4.1
 
+##Install required packages
+
+pip install -r requirements.txt
 
 ##Git remotes for testing
 
