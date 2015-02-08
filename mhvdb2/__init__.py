@@ -7,7 +7,7 @@ app.config.from_object('settings')
 
 database = SqliteDatabase(app.config['DATABASE'], threadlocals=True)
 
-from mhvdb2.admin import admin
+from mhvdb2.admin import admin  # noqa
 app.register_blueprint(admin, url_prefix='/admin')
 
 
@@ -24,7 +24,7 @@ def after_request(response):
 
 import mhvdb2.routes   # noqa
 
-from mhvdb2.models import Entity, Payment, User
+from mhvdb2.models import Entity, Payment, User  # noqa
 
 database.connect()
 if not Entity.table_exists():

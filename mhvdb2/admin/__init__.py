@@ -7,7 +7,7 @@ admin = Blueprint('admin', __name__,
 import mhvdb2.admin.routes   # noqa
 
 
-from .authentication import login_manager
+from .authentication import login_manager  # noqa
 
 
 @admin.record_once
