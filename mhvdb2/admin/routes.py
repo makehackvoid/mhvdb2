@@ -84,7 +84,8 @@ def logout():
 @login_required
 def members():
     members = Entity.select().where(Entity.is_member)
-    return render_template('admin/members.html', members=members)
+    return render_template(
+        'admin/members.html', members=members, active_member=resources.members.active_member)
 
 
 @admin.route('/members/new', methods=['GET'])

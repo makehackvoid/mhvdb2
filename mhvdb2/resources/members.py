@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta
 from peewee import DoesNotExist
 import string
 import random
+from dateutil.relativedelta import relativedelta
 
 
 def get(member_id):
@@ -19,6 +20,14 @@ def exists(email, member_id=None):
                                      (Entity.id != member_id)).count() == 1
     else:
         return Entity.select().where((Entity.email == email) & Entity.is_member).count() == 1
+
+
+def active_member(agreement_date=None):
+    one_year_ago = (datetime.now() - relativedelta(years=1)).date()
+    if agreement_date <= one_year_ago:
+        return False
+    else:
+        return True
 
 
 def validate(name, email, phone, joined_date=None, agreement_date=None, is_keyholder=None):

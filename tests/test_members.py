@@ -116,6 +116,12 @@ class MembersTestCases(unittest.TestCase):
                                   self.test_member.is_keyholder)
         self.assertEqual(len(errors), 1)
 
+    def test_active_member(self):
+        self.assertFalse(members.active_member(date(2011, 10, 10)),
+                         'member agreement is not current')
+        ten_days_ago = (date.today()-timedelta(days=10))
+        self.assertTrue(members.active_member(ten_days_ago), 'member agreement is current')
+
     def test_create(self):
         member_id = members.create(self.test_member.name,
                                    self.test_member.email,
