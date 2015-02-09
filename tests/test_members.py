@@ -119,7 +119,7 @@ class MembersTestCases(unittest.TestCase):
     def test_active_member(self):
 
         self.assertTrue(self.test_member.active_member(),
-                       'member agreement is current')
+                        'member agreement is current')
         new_agreement_date = date.today()-timedelta(days=500)
         members.update(self.test_member.id,
                        self.test_member.name,
