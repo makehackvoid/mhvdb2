@@ -5,6 +5,7 @@ from peewee import DoesNotExist
 import string
 import random
 
+
 def get(member_id):
     try:
         return Entity.get((Entity.id == member_id) & Entity.is_member)
