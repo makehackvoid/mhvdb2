@@ -3,6 +3,7 @@ from peewee import *   # noqa
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 
+
 class BaseModel(Model):
     class Meta:
         database = database
