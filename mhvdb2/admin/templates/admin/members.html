@@ -25,7 +25,7 @@
     </thead>
     <tbody data-link="row" class="rowlink">
         {% for member in members %}
-        <tr {% if active_member(member.agreement_date) %}class="success"{% endif %}>
+        <tr {% if member.active_member() %}class="success"{% endif %}>
             <td><a href="{{url_for('.member', id=member.id)}}">{{ member.name }}</a></td>
             <td>{{ member.email }}</td>
             <td>{{ member.phone }}</td>

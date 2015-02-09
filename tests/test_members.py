@@ -117,10 +117,21 @@ class MembersTestCases(unittest.TestCase):
         self.assertEqual(len(errors), 1)
 
     def test_active_member(self):
-        self.assertFalse(members.active_member(date(2011, 10, 10)),
-                         'member agreement is not current')
+
+        self.assertTrue(self.test_member.active_member(),
+                         'member agreement is current')
         ten_days_ago = (date.today()-timedelta(days=10))
-        self.assertTrue(members.active_member(ten_days_ago), 'member agreement is current')
+
+        new_agreement_date = date.today()-timedelta(days=500)
+        members.update(self.test_member.id,
+                       self.test_member.name,
+                       self.test_member.email,
+                       self.test_member.phone,
+                       self.test_member.joined_date,
+                       new_agreement_date,
+                       self.test_member.is_keyholder)
+        member = Entity.get(Entity.id == self.test_member.id)
+        self.assertFalse(member.active_member(), 'member agreement not current')
 
     def test_create(self):
         member_id = members.create(self.test_member.name,
