@@ -12,4 +12,24 @@
   <li><a href="{{url_for('.entities')}}">List of Entities (non-member)</a></li>
   <li><a href="{{url_for('.register')}}">Add a new administrator</a></li>
 </ul>
+
+<h3>Send out Emails</h3>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+<p>This version will only send to people who have never been sent a reminder - so each person can only receive a single email at the moment.</p>
+<ul>
+  <li><a href="{{url_for('.member_once_only_email')}}">Once only email to previous members</a><br>
+  Goes to people who have been members in the past but not since 2014.</li>
+  <li><a href="{{url_for('.member_renewal_email')}}">Renewal reminder email</a><br>
+  Only gets sent to people who signed member agreement more than one year before today (expired members).
+  </li>
+</ul>
 {% endblock %}
