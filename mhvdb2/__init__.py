@@ -24,13 +24,11 @@ def after_request(response):
 
 import mhvdb2.routes   # noqa
 
-from mhvdb2.models import Entity, Payment, User  # noqa
+from mhvdb2.models import Entity, User  # noqa
 
 database.connect()
 if not Entity.table_exists():
     Entity.create_table()
-if not Payment.table_exists():
-    Payment.create_table()
 if not User.table_exists():
     User.create_table()
 database.close()

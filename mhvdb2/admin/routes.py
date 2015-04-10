@@ -1,4 +1,4 @@
-from mhvdb2.models import Entity, Payment, User
+from mhvdb2.models import Entity, User
 from flask import render_template, request, flash, redirect, url_for
 from .authentication import authenticate_user, register_user
 from flask.ext.login import login_required, current_user, logout_user, current_app
@@ -243,13 +243,7 @@ def member_renewal_email():
     return redirect(url_for('.index'))
 
 
-@admin.route('/transactions')
-@login_required
-def transactions():
-    transactions = Payment.select()
-    return render_template('admin/transactions.html', transactions=transactions)
-
-
+# I think we should remove entities that are not members as well?
 @admin.route('/entities')
 @login_required
 def entities():
@@ -257,12 +251,14 @@ def entities():
     return render_template('admin/entities.html', entities=entities)
 
 
+# I think we should remove entities that are not members as well?
 @admin.route('/entities/new', methods=['GET'])
 @login_required
 def entity_new():
     return render_template('admin/entity.html', new=True)
 
 
+# I think we should remove entities that are not members as well?
 @admin.route('/entities/new', methods=['POST'])
 @login_required
 def entity_new_post():
@@ -284,6 +280,7 @@ def entity_new_post():
     return redirect(url_for('.entity', id=id))
 
 
+# I think we should remove entities that are not members as well?
 @admin.route('/entities/<int:id>', methods=['GET'])
 def entity(id):
     entity = resources.entities.get(id)
@@ -294,6 +291,7 @@ def entity(id):
         return redirect(url_for('.entities'))
 
 
+# I think we should remove entities that are not members as well?
 @admin.route('/entities/<int:id>', methods=['POST'])
 @login_required
 def entity_post(id):

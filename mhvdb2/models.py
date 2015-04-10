@@ -41,19 +41,3 @@ class Entity(BaseModel):
             return False
         else:
             return True
-
-
-class Payment(BaseModel):
-    """
-    A Payment is a transaction between an entity and the organisation. A
-    payment can be either incoming or outgoing, depending on the sign of
-    "amount".
-    """
-    time = DateTimeField()  # Date & time the payment occured
-    entity = ForeignKeyField(Entity, related_name='payments')
-    amount = IntegerField()  # Monetary amount in cents, e.g. $12.34 = 1234
-    source = IntegerField(choices=[(0, 'Other'), (1, 'Bank Transfer')])
-    is_donation = BooleanField()  # For members, donation vs payment for goods
-    notes = TextField(null=True)
-    bank_reference = CharField(null=True)  # For bank transfers
-    pending = BooleanField()
