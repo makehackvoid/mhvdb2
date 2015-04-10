@@ -4,9 +4,9 @@ MHVDBv2
 
 [![Build Status](https://travis-ci.org/makehackvoid/mhvdb2.svg?branch=master)](https://travis-ci.org/makehackvoid/mhvdb2)
 
-Version 1.0.0
+Version 1.1.0
 
-The goal of this project is to create a replacement for MHVDB. The system will store the details of members, and transactions to and from the organisation. It will allow users to sign up as members, update their details, and pay money. It will allow admins to create incoming and outgoing transactions, and view reports on members and transactions.
+This app allows users to sign up as members, update their details, and record their agreement to our code of conduct and rules. It allows admins to create view reports on members.
 
 This project uses Flask and Peewee.
 
