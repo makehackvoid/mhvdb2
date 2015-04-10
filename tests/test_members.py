@@ -116,6 +116,21 @@ class MembersTestCases(unittest.TestCase):
                                   self.test_member.is_keyholder)
         self.assertEqual(len(errors), 1)
 
+    def test_active_member(self):
+
+        self.assertTrue(self.test_member.active_member(),
+                        'member agreement is current')
+        new_agreement_date = date.today()-timedelta(days=500)
+        members.update(self.test_member.id,
+                       self.test_member.name,
+                       self.test_member.email,
+                       self.test_member.phone,
+                       self.test_member.joined_date,
+                       new_agreement_date,
+                       self.test_member.is_keyholder)
+        member = Entity.get(Entity.id == self.test_member.id)
+        self.assertFalse(member.active_member(), 'member agreement not current')
+
     def test_create(self):
         member_id = members.create(self.test_member.name,
                                    self.test_member.email,

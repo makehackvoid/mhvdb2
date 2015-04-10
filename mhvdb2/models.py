@@ -1,5 +1,7 @@
 from mhvdb2 import database
 from peewee import *   # noqa
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 
 class BaseModel(Model):
@@ -32,6 +34,13 @@ class Entity(BaseModel):
     is_keyholder = BooleanField(null=True)  # Does the member have a key?
     token = CharField(null=True)             # to authenticate members via email
     token_expiry = DateTimeField(null=True)  # expiry for the token
+
+    def active_member(self):
+        one_year_ago = (datetime.now() - relativedelta(years=1)).date()
+        if self.agreement_date <= one_year_ago:
+            return False
+        else:
+            return True
 
 
 class Payment(BaseModel):
