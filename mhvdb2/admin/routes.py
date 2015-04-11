@@ -2,9 +2,9 @@ from mhvdb2.models import Entity, User
 from flask import render_template, request, flash, redirect, url_for
 from .authentication import authenticate_user, register_user
 from flask.ext.login import login_required, current_user, logout_user, current_app
-from datetime import datetime
+from datetime import datetime, date
 from . import admin
-from mhvdb2 import resources
+from mhvdb2 import resources, app, mailer
 
 
 def get_post_value(key):
@@ -170,6 +170,77 @@ def member_post(id):
     flash("Member updated", "success")
 
     return redirect(url_for('.members'))
+
+
+@admin.route('/members/once_only_email', methods=['GET'])
+@login_required
+def member_once_only_email():
+    '''
+    Finds all expired members and sends once only email asking them to renew.
+    Used for first run, before we setup regular emails as people expire.
+    '''
+    members = Entity.select().where(Entity.is_member)
+    do_not_email = app.config['DO_NOT_EMAIL']
+    # flash('do_not_email= ' + ', '.join(do_not_email))
+    emails_sent = 0
+    for member in members:
+        if member.active_member():
+            None
+        else:
+            if member.name in do_not_email:
+                flash("Not emailing: " + member.name)
+            else:
+                if member.reminder_date:
+                    flash("Not emailing: " + member.name + " reminder_date set "
+                          + member.reminder_date.strftime('%m/%d/%Y'))
+                else:
+                    # only send this email to people who have not joined under new system (2014)
+                    if member.agreement_date.year < 2014:
+                        mailer.send(member.email,
+                                    "MakeHackVoid Membership Renewal - once only reminder email",
+                                    render_template("emails/once_only_renewal.txt",
+                                                    name=member.name, email=member.email))
+                        # set the reminder date in database so can test when sending another email
+                        member.reminder_date = date.today()
+                        member.save()
+                        emails_sent += 1
+    flash("Sent " + str(emails_sent) + " once only emails.")
+    return redirect(url_for('.index'))
+
+
+@admin.route('/members/renwal_email', methods=['GET'])
+@login_required
+def member_renewal_email():
+    '''
+    Finds all expired members who have been 'new style' members -
+    that is they have agreement_date from 2014 onwards, and
+    have not yet been sent a reminder
+     - reminders_date tests will probably want to be a bit more complex
+       at some stage
+    Sends reminder email asking them to renew.
+    '''
+    members = Entity.select().where(Entity.is_member)
+    do_not_email = app.config['DO_NOT_EMAIL']
+    # flash('do_not_email= ' + ', '.join(do_not_email))
+    emails_sent = 0
+    for member in members:
+        if member.active_member():
+            None
+        else:
+            if member.name not in do_not_email:
+                if member.agreement_date.year >= 2014 and not member.reminder_date:
+                    mailer.send(member.email,
+                                "MakeHackVoid membership renewal reminder",
+                                render_template("emails/renewal_reminder.txt",
+                                                name=member.name,
+                                                email=member.email,
+                                                agreement_date=member.agreement_date))
+                    # set the reminder date in database so can test when sending another email
+                    member.reminder_date = date.today()
+                    member.save()
+                    emails_sent += 1
+    flash("Sent " + str(emails_sent) + " once only emails.")
+    return redirect(url_for('.index'))
 
 
 # I think we should remove entities that are not members as well?

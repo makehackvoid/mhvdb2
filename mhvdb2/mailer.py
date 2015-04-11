@@ -26,7 +26,7 @@ def mock_send(to, subject, body):
     # Calculate path to save mock email. Format: YY-MM-DD-SSSSS.txt
     now = datetime.now()
     midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    file = "{0:%y-%m-%d}-{1:05d}.txt".format(now, (now - midnight).seconds)
+    file = "{0:%y-%m-%d}-{1:07d}-{2}.txt".format(now, (now - midnight).microseconds, to)
     folder = "mock_emails"
     path = os.path.join(folder, file)
 

@@ -1,0 +1,15 @@
+Hi {{name}},
+
+At some time in the past you have been a member of MakeHackVoid. During 2014 we decided to make MHV membership more accessible by removing regular payment as a requirement. To be a member under the new system you must agree to our code of conduct and rules (https://wiki.makehackvoid.com/policy:start) once each year.
+
+In lieu of membership payments, we rely on donations to cover the cost of running MHV. Again, these are voluntary and not required for membership but allow us to pay our rent, electricity, water and internet bills. Please visit https://makehackvoid.com/join/ for more information about how you can donate.
+
+We are sending you this once off email to invite you to confirm or migrate your membership to this new system.
+
+If you would like to renew your membership please visit https://members.makehackvoid.com/renew/ and enter the email address this email was sent to - {{email}}.
+
+We hope to see you at MakeHackVoid again soon!
+
+Thanks,
+MaHaVo
+The MakeHackVoid Robot
