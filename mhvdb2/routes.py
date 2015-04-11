@@ -81,6 +81,7 @@ def renew_token(token):
     return render_template("renew_token.html", name=member.name,
                            email=member.email, phone=member.phone)
 
+
 @app.route('/renew/<token>', methods=['POST'])
 def renew_token_post(token):
     member = resources.members.authenticate_token(token)
