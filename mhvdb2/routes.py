@@ -100,6 +100,6 @@ def renew_token_post(token):
 
     resources.members.update(member.id, name, email, phone, None, datetime.now())
     resources.members.invalidate_token(member.id)
-    flash("Your resources.members.ip has been renewed.", "success")
+    flash("Your membership has been renewed.", "success")
 
     return redirect(url_for("index"))
