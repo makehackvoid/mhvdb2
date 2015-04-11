@@ -81,7 +81,6 @@ def renew_token(token):
     return render_template("renew_token.html", name=member.name,
                            email=member.email, phone=member.phone)
 
-
 @app.route('/renew/<token>', methods=['POST'])
 def renew_token_post(token):
     member = resources.members.authenticate_token(token)
@@ -100,6 +99,6 @@ def renew_token_post(token):
 
     resources.members.update(member.id, name, email, phone, None, datetime.now())
     resources.members.invalidate_token(member.id)
-    flash("Your resources.members.ip has been renewed.", "success")
+    flash("Your membership has been renewed.", "success")
 
     return redirect(url_for("index"))
