@@ -65,7 +65,8 @@ def renew_post():
         url = url_for("renew_token", token=token, _external=True)
         mailer.send(email, "MakeHackVoid Membership Renewal",
                     render_template("emails/renew.txt", url=url))
-        flash("Please the confirmation link sent to your email address to continue.", "info")
+        flash("Please visit the confirmation link sent to your email address to continue.",
+              "info")
         return render_template("renew.html")
     else:
         flash("Sorry, no user exists with that email address.", "danger")
