@@ -1,6 +1,6 @@
 Hi {{name}},
 
-Although our membership does not require payments, to be a member we ask that confirm your agreement to our code of conduct and rules (https://wiki.makehackvoid.com/policy:start) once each year.
+Although our membership does not require payments, to be a member we require you to confirm your membership and agreem to our code of conduct and rules (https://wiki.makehackvoid.com/policy:start) once each year.
 
 You last indicated your agreement on {{agreement_date}} (or in some cases this date was set from the expiry of your previous membership). If you would like to renew your membership please visit https://members.makehackvoid.com/renew/ and enter the email address this email was sent to - {{email}}.
 
