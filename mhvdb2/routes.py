@@ -24,7 +24,7 @@ def signup():
 @app.route('/signup/', methods=['POST'])
 def signup_post():
     name = get_post_value("name")
-    email = get_post_value("email")
+    email = get_post_value("email").lower()
     phone = get_post_value("phone")
 
     errors = resources.members.validate(name, email, phone)
@@ -58,7 +58,7 @@ def renew():
 
 @app.route('/renew/', methods=['POST'])
 def renew_post():
-    email = get_post_value("email")
+    email = get_post_value("email").lower()
 
     if resources.members.exists(email):
         token = resources.members.create_token(email)
