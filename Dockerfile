@@ -10,13 +10,7 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV MHVDB2_PATH /opt/mhvdb2
 
 # get up to date
-RUN apt-get update --fix-missing
-
-# install software
-RUN apt-get install -y build-essential git
-RUN apt-get install -y python-pip
-RUN apt-get install -y python3 python3-setuptools python3-pip
-RUN apt-get install -y nginx supervisor
+RUN apt-get update --fix-missing && apt-get install -y build-essential git python-pip python3 python3-setuptools python3-pip nginx supervisor
 
 # stop supervisor - we'll start it ourselves
 RUN service supervisor stop
@@ -35,6 +29,8 @@ VOLUME ["/opt/mhvdb2"]
 ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 ADD requirements.txt $MHVDB2_PATH/
 ADD nginx.conf /etc/nginx/nginx.conf
+
+RUN cat /usr/lib/ssl/certs/*.crt > /usr/lib/ssl/certs/bundle.CA_BUNDLE
 
 # Install requirements from txt file
 RUN cd $MHVDB2_PATH && pip3 install -r requirements.txt

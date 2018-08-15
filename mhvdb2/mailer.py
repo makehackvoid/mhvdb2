@@ -19,7 +19,7 @@ def mailgun_send(to, subject, body):
             "subject": subject,
             "text": body}
 
-    requests.post(endpoint, auth=auth, data=data)
+    requests.post(endpoint, auth=auth, data=data, verify='/usr/lib/ssl/certs/bundle.CA_BUNDLE')
 
 
 def mock_send(to, subject, body):
