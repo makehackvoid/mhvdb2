@@ -1,7 +1,7 @@
 from mhvdb2.models import Entity
 import re
 from datetime import date, datetime, timedelta
-from peewee import DoesNotExist
+from peewee import DoesNotExist, fn
 import string
 import random
 
@@ -15,10 +15,10 @@ def get(member_id):
 
 def exists(email, member_id=None):
     if member_id:
-        return Entity.select().where((Entity.email == email.lower()) & Entity.is_member,
+        return Entity.select().where((fn.Lower(Entity.email) == email.lower()) & Entity.is_member,
                                      (Entity.id != member_id)).count() == 1
     else:
-        return Entity.select().where((Entity.email == email.lower())
+        return Entity.select().where((fn.Lower(Entity.email) == email.lower())
                                      & Entity.is_member).count() == 1
 
 
@@ -83,7 +83,7 @@ def update(member_id, name, email, phone, joined_date=None, agreement_date=None,
 
 
 def create_token(email):
-    member = Entity.get((Entity.email == email.lower()) & Entity.is_member)
+    member = Entity.get((fn.Lower(Entity.email) == email.lower()) & Entity.is_member)
     member.token = __generate_token()
     member.token_expiry = datetime.now() + timedelta(hours=24)
     member.save()
