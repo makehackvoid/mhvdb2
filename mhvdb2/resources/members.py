@@ -31,12 +31,12 @@ def validate(name, email, phone, joined_date=None, agreement_date=None, is_keyho
     if joined_date:
         try:
             datetime.strptime(joined_date, '%Y-%m-%d')
-        except TypeError:
+        except Exception:
             errors.append("Sorry, joined date must be in an acceptable format")
     if agreement_date:
         try:
             datetime.strptime(agreement_date, '%Y-%m-%d')
-        except TypeError:
+        except Exception:
             errors.append("Sorry, agreement date must be in an acceptable format")
 
     return errors
