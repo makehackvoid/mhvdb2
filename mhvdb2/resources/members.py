@@ -15,10 +15,10 @@ def get(member_id):
 
 def exists(email, member_id=None):
     if member_id:
-        return Entity.select().where((Entity.email.lower() == email.lower()) & Entity.is_member,
+        return Entity.select().where((Entity.email == email.lower()) & Entity.is_member,
                                      (Entity.id != member_id)).count() == 1
     else:
-        return Entity.select().where((Entity.email.lower() == email.lower())
+        return Entity.select().where((Entity.email == email.lower())
                                      & Entity.is_member).count() == 1
 
 
