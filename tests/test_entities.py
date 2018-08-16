@@ -83,5 +83,6 @@ class EntitiesTestCases(unittest.TestCase):
         self.assertEqual(entity.email, new_email)
         self.assertEqual(entity.phone, new_phone)
 
+
 if __name__ == '__main__':
     unittest.main()

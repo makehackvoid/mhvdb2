@@ -18,7 +18,8 @@ def exists(email, member_id=None):
         return Entity.select().where((Entity.email.lower() == email.lower()) & Entity.is_member,
                                      (Entity.id != member_id)).count() == 1
     else:
-        return Entity.select().where((Entity.email.lower() == email.lower()) & Entity.is_member).count() == 1
+        return Entity.select().where((Entity.email.lower() == email.lower())
+                                     & Entity.is_member).count() == 1
 
 
 def validate(name, email, phone, joined_date=None, agreement_date=None, is_keyholder=None):
@@ -30,12 +31,12 @@ def validate(name, email, phone, joined_date=None, agreement_date=None, is_keyho
     if joined_date:
         try:
             datetime.strptime(joined_date, '%Y-%m-%d')
-        except:
+        except TypeError:
             errors.append("Sorry, joined date must be in an acceptable format")
     if agreement_date:
         try:
             datetime.strptime(agreement_date, '%Y-%m-%d')
-        except:
+        except TypeError:
             errors.append("Sorry, agreement date must be in an acceptable format")
 
     return errors
@@ -94,7 +95,7 @@ def authenticate_token(token):
         member = Entity.get(Entity.token == token)
         if (member.token_expiry > datetime.now()):
             return member
-    except:
+    except Exception:
         pass
     return None  # no such token for member, or token is expired
 
