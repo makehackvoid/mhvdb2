@@ -5,8 +5,8 @@ cache:
   directories:
     - $HOME/.pip-cache
 install:
-  - pip install flake8 --download-cache $HOME/.pip-cache
-  - pip install -r requirements.txt --use-mirrors --download-cache $HOME/.pip-cache
+  - pip install flake8 --cache-dir $HOME/.pip-cache
+  - pip install -r requirements.txt --cache-dir $HOME/.pip-cache
 before_script:
   - cp settings.py.sample settings.py
   - flake8 .

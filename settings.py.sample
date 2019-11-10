@@ -3,4 +3,5 @@ DATABASE = "test.db"
 SECRET_KEY = "test"
 MAILGUN_DOMAIN = "makehackvoid.com"
 MAILGUN_API_KEY = ""
+MAILGUN_FROM_ADDR = "MakeHackVoid <noreply@makehackvoid.com>"
 DO_NOT_EMAIL = []

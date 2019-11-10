@@ -18,7 +18,7 @@ login_manager = LoginManager()
 def load_user(userid):
     try:
         return User.get(User.id == userid)
-    except:
+    except Exception:
         return None
 
 

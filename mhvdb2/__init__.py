@@ -1,5 +1,6 @@
 from flask import Flask, g
 from peewee import *   # noqa
+from peewee import SqliteDatabase
 
 app = Flask(__name__)
 

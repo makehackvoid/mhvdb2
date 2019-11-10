@@ -1,5 +1,6 @@
 from mhvdb2 import database
 from peewee import *   # noqa
+from peewee import CharField, BooleanField, DateField, DateTimeField, Model
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 

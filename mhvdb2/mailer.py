@@ -14,12 +14,12 @@ def send(to, subject, body):
 def mailgun_send(to, subject, body):
     endpoint = "https://api.mailgun.net/v2/{}/messages".format(app.config["MAILGUN_DOMAIN"])
     auth = ("api", app.config["MAILGUN_API_KEY"])
-    data = {"from": "MakeHackVoid <noreply@makehackvoid.com>",
+    data = {"from": app.config["MAILGUN_FROM_ADDR"],
             "to": to,
             "subject": subject,
             "text": body}
 
-    requests.post(endpoint, auth=auth, data=data)
+    requests.post(endpoint, auth=auth, data=data, verify='/usr/lib/ssl/certs/bundle.CA_BUNDLE')
 
 
 def mock_send(to, subject, body):
